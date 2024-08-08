@@ -1,9 +1,9 @@
 # adarshah21-NASSCOM-VSD-SoC-design-program
 
-Day1
+# Day1
 ______________________________________
 
-**# Introduction to QFN-48 Package, chip, pads, core, die, IPs**
+# Introduction to QFN-48 Package, chip, pads, core, die, IPs 
 
 ![image](https://github.com/user-attachments/assets/8b490443-aee3-456a-95c3-a8c159a81d94)
 
@@ -24,7 +24,7 @@ ______________________________________
 **PDKs**: Process Design kits are the set of files that are used in the semicundoctor industry to communicate between Foundry and design engineer. It is used  to model a fabrication process for the design tools used to design an integrated circuit. The PDK is created by the foundry defining a certain technology variation for their processes. It is then passed to their customers to use in the design process.
 __________________________________________
 
-**# Introduction to Risk-V**
+# Introduction to Risk-V
 
 **ISA**: Instruction Set Architecture popularly known as ISA is the way we interact with computers. We usually write programs in High level lnguages like C, Java, Python etc but these languages are not understood by machines. Here's when ISA comes to picture.The written codes will be translated to its assembly language program, which is then converted to machine level program which is binary program which is understood by the hardware of the computer using ISA. 
 
@@ -32,4 +32,6 @@ __________________________________________
 
 ![image](https://github.com/user-attachments/assets/7f3d0a9a-5e50-40af-bbc9-2f5034af113f)
 _________________________________________________________________________
+
+#  From Software Application to Hardware
 
