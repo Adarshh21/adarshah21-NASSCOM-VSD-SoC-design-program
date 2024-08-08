@@ -2,7 +2,9 @@
 
 Day1
 ______________________________________
-#Introduction to QFN-48 Package, chip, pads, core, die, IPs
+
+**#Introduction to QFN-48 Package, chip, pads, core, die, IPs**
+
 ![image](https://github.com/user-attachments/assets/8b490443-aee3-456a-95c3-a8c159a81d94)
 
 ![image](https://github.com/user-attachments/assets/3fcf6d7a-078b-44a1-8754-8fc3eb349b47)
@@ -20,6 +22,7 @@ ______________________________________
 **Macros**: Macro Cells are the Memory cells. These IPs have been designed by some other Analog design team, which can be used in the floor plan stage of the design.
 
 **PDKs**: Process Design kits are the set of files that are used in the semicundoctor industry to communicate between Foundry and design engineer. It is used  to model a fabrication process for the design tools used to design an integrated circuit. The PDK is created by the foundry defining a certain technology variation for their processes. It is then passed to their customers to use in the design process.
+__________________________________________
 
-
+**#Introduction to Risk-V**
 
