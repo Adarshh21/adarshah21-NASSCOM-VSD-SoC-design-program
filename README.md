@@ -35,3 +35,15 @@ _________________________________________________________________________
 
 #  From Software Application to Hardware
 
+We interact with application software (apps) to communicate with the hardware, this happens due to a layer which is between the application software and the hardware called system software. The applications interface with the system software, which then translates them into a language the hardware can understand, namely binary language.
+
+![image](https://github.com/user-attachments/assets/5d9bf05c-a374-4f9f-98f1-2191284a043d)
+
+
+The major layers of system software are:
+
+**Operating Syste (OS)**: The Operating system handels a lot of things including I/O operations, allocation of memory and low level system functions, the OS translates application software into corresponding code in languages such as C, C++, or Java.
+
+**Compiler**: The compiler takes the code produced by OS and converts them into an instruction set (ex: .exe file). The syntax of this instruction set depends on specific hardware being is used.
+
+**Assembler**: The assembler then converts these executable files into binary language, which the hardware can understand and execute to perform the desired operations.
