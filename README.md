@@ -138,5 +138,75 @@ Physical Verification Checks: Design Rule Check (DRC) and Layout vs. Schematic (
 Timing Checks: Static Timing Analysis (STA) checks the design for timing violations.
 __________________________________________________________________________________________________
 
-# Introduction to OpenLANE detailed ASIC Design flow
+# Introduction to OpenLANE
+
+OpenLANE started as a Open-Source for a true Open Source Tapeout Experiment.The main goal of OpenLANE ASIC flow is to produce a clean GDSII without any human intervention.Clean means no LVS voilations, no DRC Voilations and no timing voilations. OpenLANE is tumed for SkyWater 130 nm PDK it also supports XAB180 anf GF130G. It is used to Produce GDSII for both Macros and Chips. It has two modes of operations: 
+
+Autonomous: Here we configure the flow and push button  the flow and then wait for some time based on the design size and then we get the final GDSII. 
+
+Interactive: Here we can run programs and steps one by one so that we can do experementation and also view results of the intermediate setps while we are executing the frontfloor sreps.
+
+**OpenLANE ASIC Design Flow**
+
+![image](https://github.com/user-attachments/assets/aa3800b3-e93e-4687-b2af-3f0d6378166e)
+
+The image illustrates the detailed ASIC design flow in OpenLANE. The process begins with the Design RTL, which undergoes RTL synthesis using Yosys and ABC to produce an optimized gate-level netlist. This netlist is then subjected to STA (Static Timing Analysis) to check for timing violations. Following STA, Design for Test (DFT) is performed, though this step is optional and uses the FAULT tool.
+
+![image](https://github.com/user-attachments/assets/5836dab6-1faf-4c9a-868f-793eafecb7d7)
+
+FAULT (for DFT) includes:
+
+- Scan Insertion
+
+- Automatic Test Pattern Generation (ATPG)
+
+- Test Pattern Compaction
+
+- Fault Coverage
+
+- Fault Simulation
+
+After DFT, the next phase is Physical Implementation, also known as Automated Place and Route (PnR), using OpenRoad.
+
+OpenRoad (for Physical Implementation) includes:
+
+- Floor/Power Planning
+
+- End Decoupling Capacitors and Tap Cells Insertion
+
+- Placement: Global and Detailed
+
+- Post-Placement Optimization
+
+- Clock Tree Synthesis
+
+- Routing: Global and Detailed
+
+The next step is the Logic Equivalence Checking (LEC) which must be performed for each design change.Here the netlist is modified either by CTS or Post Placement Optimizations. LEC is used to confirm the functionality remains unchanged after netlist modifications. An important step during physical implementation is the "Fake Antenna Diodes Insertion Script."
+
+Dealing with Antenna Rule Violations: When a metal wire segment is fabricated, it can act as an antenna. Reactive ion etching can cause charge accumulation on the wire, potentially damaging transistor gates during fabrication.
+
+It has two solutions:
+
+ - Bridging: Attaching a higher layer intermediary, which requires router awareness.
+
+ - Add an antenna diode cell to leak away charges. Antenna diodes are provided by the SCL.
+
+![image](https://github.com/user-attachments/assets/43cec02e-84d5-4c4e-bd19-1c23cbb11c2c)
+ 
+For this we took a preventive approach:
+
+  - Add a Fake antenna didoe next to every cell input after placement.
+
+  * Run the Antenna Checker(Magic) on the routed layout.
+
+  * If the checker reports violation on the cell input pin, replace the fake diode cell by a real one.
+
+And at the end, we perform Physical Verification. Which includes DRC(Design Rule Checking) , LVS(Layout Vs Schematic). Along with the P.V we also performs STA to check for timing violations in the design.
+
+MAGIC is used for DRC and SPICE Extraction from Layout.
+
+MAGIC and Netgen are used for LVS by comparing Extracted SPICE by MAGIC and Verilog Netlist.
+_____________________________________________________________________________
+# Day 1 Labs
 
