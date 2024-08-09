@@ -1,4 +1,4 @@
-# adarshah21-NASSCOM-VSD-SoC-design-program
+********# adarshah21-NASSCOM-VSD-SoC-design-program
 
 # Day1
 ______________________________________
@@ -58,6 +58,7 @@ Let us consider the example of a stop watch. A simple program for a stop watch i
 ![image](https://github.com/user-attachments/assets/d6fb541d-86ad-4f90-b9e3-3a630404c4e2)
 
 _________________________________________________________________________________________________________________
+
 # Introduction to Opensource Digital ASIC Design Tools
 
 ![image](https://github.com/user-attachments/assets/4fc97d54-7792-43f0-9e4d-aa0bbec913ef)
@@ -74,6 +75,10 @@ ________________________________________________________________________________
 
 **Process Design Kit**: PDK is a set of files used to model a fabrication process for EDA tools during IC design. This kit includes Process Design Rules: DRC (Design Rule Check), LVS (Layout Versus Schematic), PEX (Parasitic Extraction) Device Models, Digital Standard Cell Libraries, I/O linraries etc.
 _________________________________________________________________________________________
+
+# Simplified RTL to GDS flow
+
+
 
 
 
