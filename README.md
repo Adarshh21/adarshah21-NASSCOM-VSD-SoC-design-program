@@ -1,4 +1,4 @@
-********# adarshah21-NASSCOM-VSD-SoC-design-program
+# adarshah21-NASSCOM-VSD-SoC-design-program
 
 # Day1
 ______________________________________
@@ -78,8 +78,65 @@ ________________________________________________________________________________
 
 # Simplified RTL to GDS flow
 
+The simplified ASIC design flow starts with the ready RTL file and passes through a series of stages to produce a GDS file, which can be then sent to foundry for the fabrication.The main stages of RTL to GDS are as follows:
 
+![image](https://github.com/user-attachments/assets/dbd2f62f-89b3-4125-8866-c15ec3d8d9fd)
 
+Synthesis:
 
+Synthesis is the process of converting the RTL code into a gate-level netlist ie, a circuit out of standard cell library. The synthesis process uses a synthesis tool to convert the RTL code into a gate-level representation of the design. 
 
+![image](https://github.com/user-attachments/assets/34873487-d480-4649-8165-f47e40cc44ba)
   
+Flooor and Power planning:
+
+The objective is to plan the silicon area and create robust power distribution network to power the circuits.
+
+Chip Floor planning: Partition the chip die between different system building blocks and place the I/O pads. 
+
+Macro planning: Here we define the Macro dimension and its pin locations, also the rows n routing steps are defined which will be used in later steps.
+
+![image](https://github.com/user-attachments/assets/ef791c09-9e47-4569-ab9b-ad34210e5f37)
+
+Power planning: The chips are powered through multiple VDD and VSS pins. The power pins are connected to all components through rings and horizontal and vertical metal straps such parallel structures reduce the resistance. 
+
+![image](https://github.com/user-attachments/assets/0cc70a14-25fb-4845-8b10-bf52ba0b86ef)
+
+Placement:
+
+Place the gate level netlist list cells in macros on the virtual rows. It is advised to place the connected cells nearby.
+
+![image](https://github.com/user-attachments/assets/da1effe0-382c-4ab5-9612-cf8721efcfe1)
+
+Placement is done in two stages:
+
+Global Placement: It tries to find optimal positions for all cells such positions may not be necessarily legal so the cells may overlap and may go off rows.
+
+Detailed Placement: Here the placements obtained from Global placement are manually altered and the cells are optimally placed following placement rules.
+
+![image](https://github.com/user-attachments/assets/7f943dd8-d7ee-4f42-a322-c6d05520b858)
+
+Clock Tree Synthesis:
+
+Clock routing is done before signal routing by creating clock distribution network in order to deliver the clock to all sequential like flipflops. The clock distribution is done in symmetric tree design 
+(H-tree, X-tree) so that it has minimum skew.
+
+![image](https://github.com/user-attachments/assets/595519ad-2e15-47cc-9bfa-fb603ea5214b)
+
+Routing:
+   
+After clock routing, signal routing is performed using the remaining metal layers as defined by the PDK. The PDK is used to define the thickness, pitch, tracks and the minimum width. It also defines the VS that can be used to connect wirensegments on different metal layers. The sky130 PDK defines 6 routing layers. The lowest layer is called the Local interconnect layer which is titanium layer anf following 5 layers are aluminium layers.Routing is divided into Global Routing (generates a routing guide based on PDK instructions) and Detailed Routing (actual routing according to the guide).
+
+![image](https://github.com/user-attachments/assets/a0180373-c2c7-4497-ab0b-1eeed0a2b0a0)
+
+Sign-off:
+
+Once routing is completed, the chip undergoes various checks during the sign-off stage:
+
+Physical Verification Checks: Design Rule Check (DRC) and Layout vs. Schematic (LVS). DRC verifies design rule compliance, while LVS ensures functional correctness against the gate-level netlist.
+        
+Timing Checks: Static Timing Analysis (STA) checks the design for timing violations.
+__________________________________________________________________________________________________
+
+# Introduction to OpenLANE detailed ASIC Design flow
+
