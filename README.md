@@ -384,6 +384,30 @@ We can solve this problem with the help of  de-coupling capacitors.this  De-coup
 In the chip it will look something like shown in the figure. Decoupling capacitors are placed in between the block a, block b and block c. So here in this whole block it has been ensured that supply is being done by the de-coupling capacitor. Once we are done with this we have taken care of the local communication.
 _____________________________________________________________________________________________________
 
+# Power Planning
+
+Let us consider the Previous circuit as a black box called as a macro. If this macro is repeated multiple times on the chip then there will be current demand for each and every element of the macro. The current demends for each of the macro is solved with the help of de-coupling capacitor.
+
+![image](https://github.com/user-attachments/assets/5bb53811-17f3-4354-ac08-e677da17983e)
 
 
+Let one of the macro be a driver and the other one be a load and there  is signal which is send from driver to load and the signal is basically logic 0 to logic 1. Here we need to maintain the particular driver to load line with same signal so that the load recieves the same. Now power supply is applied. Now assume 16 bit bus has to retain the same signal from driver to the load. so it should get the sufficient power from the supply. But at this bus, there is no de-coupling capacitor is available because it is not physible to put capacitor at all over the place. now, power supply is far away from the bus, that is why some voltage drop between them will occur definetly.  
 
+When we say one particular line of 16-bit bus is logic 1 it says that the capacitor is being charged to Vdd, and whenever we say logic 0 it says that the capacitor is discharged to ground.Let consider this 16 bit bus connected to inverter. So, all the capacitor are initially charged will get discharged and vice-versa due to inverter.
+
+![image](https://github.com/user-attachments/assets/0ea585b3-edb0-4a7a-bbdd-6826f5588775)
+
+But the problem is occuring due to all capacitors are connected to the single ground. This will cause a bump in 'ground' tap point during discharging this bump is called as Ground Bounce. If the size of the bump exceeds the noise margin level it might enter into an undefined state and due to undefined state it can either go to logic 1 or logic 0, this state is not desired.
+
+![image](https://github.com/user-attachments/assets/4a518e50-c371-4275-83a3-fa899d28b400)
+
+Also , all capacitors which were'0' volts will have to charge to 'V'volts through single 'vdd'tap point. This will cause lowering of voltage at Vdd tap point. As long as this voltage drop is in noise margin level we are good enough but if it goes into an undefined region then things become unpredictable.
+
+![image](https://github.com/user-attachments/assets/8865a16a-3bcb-4f14-a9ca-c09abf80b02f)
+
+The phenomenon we have seen was causing the lowering of the supply voltage,this problem occured because power has applied to one point only. The solution of the problem is use multiple power supply. So, every block will take charge from neartest power supply and similarly dump the charge to the nearest ground this type of power supply is called mesh. Hence we can see a large amount of meesh power supply in all the new chips.
+
+The final power planning will be as shown:
+![image](https://github.com/user-attachments/assets/72969424-2e46-41fb-b527-90cdad19ba3a)
+
+______________________________________________________
