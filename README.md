@@ -324,7 +324,7 @@ A 'Core is the section of the chip where the fundamental logic of the design is 
 
 ![image](https://github.com/user-attachments/assets/b92df87a-afb9-4fd8-828f-e8535f5c76a7)
 
-let us consider this silicon wafer with dimensions 2units x 2 units. 
+let us consider this silicon wafer with core dimensions 2units x 2 units. 
 
 In this case, when calculated
 - Utilization factor = (4 squnits)/(4 squnits) = 1
@@ -332,7 +332,7 @@ In this case, when calculated
 
 ![image](https://github.com/user-attachments/assets/15456d53-a34a-4dcc-b164-b1763742728c)
 
-let us consider this silicon wafer with dimensions 2units x 2 units. 
+let us consider this silicon wafer with core dimensions 2units x 2 units. 
 
 In this case, when calculated
 - Utilization factor = (4 squnits)/(8 squnits) = 0.5
