@@ -381,7 +381,7 @@ We can solve this problem with the help of  de-coupling capacitors.this  De-coup
  
 ![image](https://github.com/user-attachments/assets/2b603495-7a36-4553-a9ae-e739aab9f423)
 
-In the chip it will look something like shown below Decoupling capacitors are placed in between the block a, block b and block c. So here in this whole block it has been ensured that supply is being done by the de-coupling capacitor. Once we are done with this we have taken care of the local communication.
+In the chip it will look something like shown in the figure. Decoupling capacitors are placed in between the block a, block b and block c. So here in this whole block it has been ensured that supply is being done by the de-coupling capacitor. Once we are done with this we have taken care of the local communication.
 _____________________________________________________________________________________________________
 
 
