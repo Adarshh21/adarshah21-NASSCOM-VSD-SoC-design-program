@@ -323,6 +323,7 @@ A 'Core is the section of the chip where the fundamental logic of the design is 
     Aspect Ratio = (Height of the core / Width of the core)
 
 ![image](https://github.com/user-attachments/assets/b92df87a-afb9-4fd8-828f-e8535f5c76a7)
+
 let us consider this silicon wafer with dimensions 2units x 2 units. 
 
 In this case, when calculated
@@ -330,6 +331,7 @@ In this case, when calculated
 - Aspect Ratio = (2 units)/(2 units) = 1 (The core is in a square shape.)
 
 ![image](https://github.com/user-attachments/assets/15456d53-a34a-4dcc-b164-b1763742728c)
+
 let us consider this silicon wafer with dimensions 2units x 2 units. 
 
 In this case, when calculated
