@@ -338,4 +338,34 @@ In this case, when calculated
 - Utilization factor = (4 squnits)/(8 squnits) = 0.5
 - Aspect Ratio = (2 units)/(4 units) = 0.5 (The core is in a rectangular shape.)
 ________________________________________________________________________________________________________
+# Pre Placed Cells
+
+Let us consider a combinational logic circuit  which does some function it may be a memory, complex mux which basically does some amount of job.It does a huge job so the output of combinational logic circuit assume to be a huge circuit having some N Logic gates so let's devide it into some small numbers of gates. We will cut the whole circuit into two parts, and separate both of them into two blocks and both block will be implemented seperately. We have all the connectivity information from cut 1 and cut 2. We seperate these cuts into 2 different blocks as block 1 and block 2.
+
+![image](https://github.com/user-attachments/assets/4545eb5e-42b3-41f2-92f6-c15accf6ebcd)
+ 
+Let us extend the inputs and outputs of both the blocks. The section of the circuitry of the blocks is invisible to the person who is looking into the main netlist hence can be imagined as black boxes. Next we seperate those black boxes into two seperate blocks or IPs.
+
+![image](https://github.com/user-attachments/assets/9a36a292-556d-4d40-b61b-07756c789f54)
+
+Advantage of doing this is we can reuse them multiple times after implimenting once only. Similary there are other IP's also available for eg. Memory, Clock-gating cell, Comporator, MUX all of these are part of the top level netlist.They recieve some signals and perform functions and deliver the outputs but the functionality of the cell is implemented only once.
+
+The arrangement of these IP's in a chip is refferd as floorplanning.
+
+These IP's have user-defined locations, and hence are placed in chip before automated placement and routing are called "pre-placed cells".
+
+These cells are placed in such a way that, the placement and routing tool do not touch the location of the cell. 
+________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
 
