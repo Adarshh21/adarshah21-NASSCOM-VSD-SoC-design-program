@@ -277,5 +277,63 @@ Similarly there is a systhesis report created in 'Desktop/work/tools/openlane_wo
 
 ![image](https://github.com/user-attachments/assets/f75e6521-9ece-4269-89a7-e16e0d808c01)
 
-
 ___________________________________________________________________________________________________________________
+# Day 2: Good floorplan vs bad floorplan and introduction to library cells
+__________________________________________________
+
+# Chip floor planning considerations
+
+It is the first step in physical design flow to find out the width and height. Let's begin with a netlist, netlist is two flipflops and have a simple combination logic in between. A netlist describes the connectivity of an electronic design. 
+ 
+The height and width of core area will be decided by the netlist of the design. It will be based on the number of components required in order to execute the logic and the height and width of the die area will be dependent on the core area height and width.
+
+
+![image](https://github.com/user-attachments/assets/6fd1aefc-aa2f-4ba7-82de-4bc39409658a)
+
+For example, lets consider a netlist that is having two logic gates and two flipflops.Now, let's convert the symbols into physical dimensions. We are interested in the dimensions of the Core and Die not in the dimensions of the wires.
+
+Let's standard cell have dimensions of 1unit*1unit
+
+So, area= 1 Sq. units
+
+Asuume same area for the flipflop as well = 1 Sq. units
+
+with help of these dimensions and netlist let's calculate the area occupied by the netlist on a silicon wafer.
+
+![image](https://github.com/user-attachments/assets/f5acf7e1-d4e9-42fe-8b54-12e206ca4e58)
+
+In order to roughly calculate the minimum area occupied by netlist, we remove all wires and bring all the flops and logic gates in a single plate.So after combining them together width and length will be 2 units each and if we calculate the total area the it will be 4 Sq. units.
+
+What is 'Core' and 'Die' section of a chip?
+
+Let's have a silicon wafer on which all the logics are implemented. In thes one section is refered as 'Die' and inside the Die we have the Core.
+
+A Die which consists of core, is small semicondcutor material specimen on which the fundamental circuit is fabricated.
+
+A 'Core is the section of the chip where the fundamental logic of the design is placed.
+
+![image](https://github.com/user-attachments/assets/2c905db8-61f1-449a-a9da-c7bb4785820d)
+
+**Utilization Factor**: Utilization Factor is defined as "The ratio of the core area occupied by the netlist to the total core area".For a good FloorPlan, The Utilization Factor should never be '1' because when the Utilization factor becomes '1' , there will be no place for adding additional logic if needed and it will be considered as a bad FloorPlan.
+
+    Utilization Factor = (Area occupied by netlist / Total core area)
+
+**Aspect Ratio**: Aspect Ratio is defined as "The ratio of Height of the core to the width of the core". If the Aspect ratio is '1' , then the core is said to be in a square shape and other than '1' the core will be a rectangle.
+
+    Aspect Ratio = (Height of the core / Width of the core)
+
+![image](https://github.com/user-attachments/assets/b92df87a-afb9-4fd8-828f-e8535f5c76a7)
+let us consider this silicon wafer with dimensions 2units x 2 units. 
+
+In this case, when calculated
+- Utilization factor = (4 squnits)/(4 squnits) = 1
+- Aspect Ratio = (2 units)/(2 units) = 1 (The core is in a square shape.)
+
+![image](https://github.com/user-attachments/assets/15456d53-a34a-4dcc-b164-b1763742728c)
+let us consider this silicon wafer with dimensions 2units x 2 units. 
+
+In this case, when calculated
+- Utilization factor = (4 squnits)/(8 squnits) = 0.5
+- Aspect Ratio = (2 units)/(4 units) = 0.5 (The core is in a rectangular shape.)
+________________________________________________________________________________________________________
+
