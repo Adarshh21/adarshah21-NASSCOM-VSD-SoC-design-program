@@ -357,14 +357,32 @@ These IP's have user-defined locations, and hence are placed in chip before auto
 These cells are placed in such a way that, the placement and routing tool do not touch the location of the cell. 
 ________________________________________________________________________________________________________________
 
+# De-coupling Capacitors
 
+Let us consider  block a, b, c as 3 Pre placed cells. The design baground says that all the inputs are placed at the left side of the floorplan and outputs at the right side. We also understand from the design summary that most of these pre placed cells are communicating with the input pins. So we come up with the decision to place these blocks close to the input side. The locations of these pre placed cells are never touched while we go through the design cycle. 
 
+![image](https://github.com/user-attachments/assets/165b87d7-c40e-48d4-a7c0-e8cd670339f9)
 
+Let us consider the below shown piece of circuit is a part of any of the block a,b or c. When some gate (let consider AND gate) switched from 0 to 1 or 1 to 0, there is a capacitor sitting at each gate which charges and discharges respectively. This amount of charge is sent by the supply voltage. It is the responsibility of the vdd to supply current to charge the capacitor whenever the logic switches from 0 to 1 and the vss accounts to take back that current whenever logic switches from 1 to 0 that is the capacitor discharges. 
 
+![image](https://github.com/user-attachments/assets/3dee3dcb-9e99-4130-bfea-09d31d0071c2)
 
+In reality when the power supply flows from vdd to vdd' there is a voltage drop in the wire because the wires are physical and anything that has physical dimensions will have inducatance capacitance and resisitance associated with it.Consider capacitance to be 0. Rdd,Ldd,and Lss are well defined values. During switching operation, the circuit demands switching current i.e. peak current. Now, due to the presence of Rdd and Ldd, there will be a voltage drop across them and the voltage at Node 'A' would be Vdd' instead of Vdd.
 
+![image](https://github.com/user-attachments/assets/12a49f5b-4c2a-4966-a00b-4e3decb4f322)
 
+![image](https://github.com/user-attachments/assets/90d58348-235f-4cb0-8887-a1b004567a9e)
 
+In order to get the logic 1 during charging the vdd' should lie within the noise margin range of NMh and to get logic 0  Noise margin range of NMl. If Vdd' lies in the Undefined region then the output may either be logic 1 or logic 0 hence this reange is highly unstable and undesired. 
+
+![image](https://github.com/user-attachments/assets/8806fd83-3976-49f8-8c30-cb8da8b62d36)
+
+We can solve this problem with the help of  de-coupling capacitors.this  De-coupling capacitor is a huge capacitor which is completely filled with charge.it is placed in parallel with the circuit. Every time the circuit switches, it draws current from Cd, whereas, the RL network is used to replenish the charge into Cd. And the amount of current needed for the circuit is supplied by the De- Coupling Capacitor.
+ 
+![image](https://github.com/user-attachments/assets/2b603495-7a36-4553-a9ae-e739aab9f423)
+
+In the chip it will look something like shown below Decoupling capacitors are placed in between the block a, block b and block c. So here in this whole block it has been ensured that supply is being done by the de-coupling capacitor. Once we are done with this we have taken care of the local communication.
+_____________________________________________________________________________________________________
 
 
 
