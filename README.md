@@ -208,5 +208,74 @@ MAGIC is used for DRC and SPICE Extraction from Layout.
 
 MAGIC and Netgen are used for LVS by comparing Extracted SPICE by MAGIC and Verilog Netlist.
 _____________________________________________________________________________
-# Day 1 Labs
+# Day 1 Lab: Getting Familiar with OpenSource EDA tools
 
+**Useful LINUX Commands**
+
+- pwd : It displays the present working directory and its path.
+- cd : Using this command we can move in both ways in the directory tree.
+- ls : It lists all the sub-directories and files present in the current directory.
+- ls -ltr : lists the directory contents in long format, sorted by modification time in reverse order (oldest first).
+-  ls --help: displays a help message for the "ls" command.
+- clear: clears the terminal screen.
+- less "filename": opens the file to view.
+-  vim "filename": opens the file to edit. Press "i" to edit, press Esc, then ":wq" to save and exit, "q!" exit without save.
+- touch "filename": creates a new file Now, we go to the work directory where all files related to the workshop are stored.
+- mkdir : Using this command, we can create a new directory.
+- rmdir : Using his command, we can delete an existing directory.
+- rm : This command is used to delete the files.
+_______________________________________________________________________________________________
+
+**Commands to start Openlane using a docker and run synthesis**
+
+choose directory:
+
+    cd Desktop/work/tools/openlane_working_dir/openlane
+    docker
+
+Now that we have entered the OpenLANE flow contained docker sub-system we can invoke the OpenLANE flow in the Interactive mode using the following command:
+
+    flow.tcl -interactive
+Now that OpenLANE flow is open we have to input the required packages for proper functionality of the OpenLANE flow:
+    
+    package require openlane 0.9    
+Now the OpenLANE flow is ready to run any design and initially we have to prep the design creating some necessary files and directories for running a specific design which in our case is 'picorv32a':
+
+    prep -design picorv32a
+
+![image](https://github.com/user-attachments/assets/c8b2c651-d698-490a-a3a1-8ca5b2c8d455)
+
+Once the preparation is complete, a new directory with the current date will be generated within the “runs” folder. Inside this directory, all the necessary subdirectories for storing results, reports, and other relevant data will be created. All the folders except for 'tmp' folder will be empty.
+
+![image](https://github.com/user-attachments/assets/f6cd7139-80b1-49a8-97e3-10180aef7bba)
+
+Merged.lef is the new file created in the same folder which is opened by 'less Merged.lef' command.
+
+The results of each layer get stored in results folder similarly the reports of timing analysis is in stored in timing folder, at this thage these two folders are empty.
+
+![image](https://github.com/user-attachments/assets/3d15c887-82c1-4f46-bc5f-9d7687e5c602)
+
+Now that the design is prepared and ready, we can run synthesis using following command:
+    
+    run_synthesis
+![image](https://github.com/user-attachments/assets/e6727eed-18f7-4269-9044-88b7f7f91ee2)
+
+After synthesis is done we will see the results of synthesis both in docker winodw and also in openlane directory under synthesis
+
+After synthesis we have to calculate
+
+FLOP RATIO = No of D flipflop / Total Number of cells
+
+Percentage = Flop Ratio × 100
+![image](https://github.com/user-attachments/assets/2ed93833-e057-424d-a871-c794f8f6000a)
+
+hence the flop ratio is 0.1084 and the percentage is 10.84%.
+
+Now we can view the synthesis results in the 'Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/10-8_10-17/results/synthesis' directory with the folder name 'picorv32a.synthesis.v' 
+
+Similarly there is a systhesis report created in 'Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/10-8_10-17/reports/synthesis' directory with the last yosys report to be generated gives the actual synthesis statistics report which can be viewed using command 'less (folder name)'.
+
+![image](https://github.com/user-attachments/assets/f75e6521-9ece-4269-89a7-e16e0d808c01)
+
+
+___________________________________________________________________________________________________________________
