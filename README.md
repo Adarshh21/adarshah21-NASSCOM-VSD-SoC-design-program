@@ -534,12 +534,35 @@ Area of die in micron = 660.685 x 671.405 = 443,587.212425 sq µm.
 Now, to open this ".def" file in magic, use the following command:
 
     magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
+![image](https://github.com/user-attachments/assets/caf17129-7b11-445a-be2f-053d1c84eb69)
 
+**Review Floorplan layout in magic**
 
+Design Alignment Instructions:
 
+**Centering the Design:**
+1. Press S to select the entire design.
+2. Press V to vertically align it to the middle of the screen.
 
+**Zooming In on a Specific Area:**
+1. Left-click and drag to select the desired region.
+2. Right-click to bring up the context menu.
+3. Press Z to zoom in on the selected area.
 
+**Getting Details of a Cell:**
+1. Move your cursor to the cell of interest.
+2. Press S to select the cell.
+3. In the tkcon window, enter the command "what" to display cell details.
 
+![image](https://github.com/user-attachments/assets/3768baca-40c3-4411-ac59-ce672748f1a5)
+
+![image](https://github.com/user-attachments/assets/fca10a17-309e-4378-a9b0-6a42747fefb6)
+
+![image](https://github.com/user-attachments/assets/076f2064-47a7-415d-bbd6-0193b0dff85e)
+
+![image](https://github.com/user-attachments/assets/54209cc5-769f-4c85-82fc-f34af6041b6d)
+
+____________________________________________________________________________
 
 
 
