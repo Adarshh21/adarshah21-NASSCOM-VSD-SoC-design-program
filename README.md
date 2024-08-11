@@ -676,7 +676,9 @@ The inverter has to represented in form of the shape, drive strength, power char
       - Metal Layers: There may be a specification that certian libraries have to be built under certian metal layers itself. For example in some cases there may be a requirement that the mettal layers, poly layers and the power rails should be built on layer 3,,4,and 5 respectively.
       - Pin Location: The library developer has to decide on pin location based on the specification provided by user.                                         
       
-2. Design steps: The design again involves 3 edifferent steps:
+2. Design steps:
+  
+   The design again involves 3 edifferent steps:
     - Circuit Design: In circuit Design there are two steps. These are mostly based on SPICE simulations:
        - First step is to create the logical schematic of your circuit that is implement the function itself.
        - second step is to model the PMOS nad NMOS transistor in such a fashion in order to meet the libraray. The specification may be like W/L of PMOS is 2.5 times the W/L of NMOS. Other example is that the drain current has to be some x microamps.
@@ -688,11 +690,31 @@ The inverter has to represented in form of the shape, drive strength, power char
        - Next step is to convert this stick diagram into a typical Layout, adhering DRC and LVS rules we have discissed earlier and also the user defined specifications.
        - Final step is to extract the parasatics of that particular layout and charaterise it in terms of timing. 
     - Characterisation: It helps to get the timing noise and power information.
-4. Outputs: We get Outputs at each design phase as follows:
+3. Outputs:
+  
+   We get Outputs at each design phase as follows:
     - The typical output what we get from the circuit design is CDL(circuit description language) file.
     - The output of the layout design will be GDSll which is a typical layout files. LEF defines the width and height of the cell and extracted spice netlist(.cir) is nothing but the paracitics that is the resistance and capacitance of each and every element extracted out of a particular layout.
     - The output of Characterization is the timing, noise and power libs. 
 
+**Typical characterization flow**
 
+Lwr us figure out what all we have from the inputs and design stage. The inputs available with us are Layout lets say a buffer, next we have the description of the buffer along with the power source, capacitance etc that is getting connected, next we have the spice extracted netlist, next we have inverter sub circuit which in turn has the PMOS and NMOS SPICE Models. 
+
+The standard characterization flow followed in industries is as follows:
+1. Read the PMOS and NMOS model files
+2. Read the extracted SPICE netlist.
+3. Recognize the behaviour of the circuit, here buffer.
+4. Read the sub circuit, here the inverter.
+5. Attach the necessary power sources.
+6. Apply and read the stimulus given to characterization setup.
+7. Provide the necessary output capacitances.
+8. Provide necessary simulation command. Here we are doing transient simulation so we give *.tran* if we do DC simulation we give *.dc*.
+
+Next step is to feed in all this inputs from 1 to 8 in a form of a configuration file to the characterization software "GUNA".
+
+![image](https://github.com/user-attachments/assets/98a62a10-4d7d-42ad-b8a9-0a343f267d60)
+
+![image](https://github.com/user-attachments/assets/53e645a9-940a-41a6-81f9-9d9c3f4b3c03)
 
 
