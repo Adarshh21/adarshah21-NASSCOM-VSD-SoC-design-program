@@ -608,16 +608,52 @@ Stage 4 circuit is a bit tricky to do as there is criscrossing of wires in that 
 
 ![image](https://github.com/user-attachments/assets/3887d6ee-53b1-4343-9e73-48375b42c2ea)
 
-.Now we have to check that, what we have done is correct or not. For that we need to do Timing analysis by considering the ideal clocks and according to the data of analysis, we will understand that, the placement is correct or not.
+Now we have to check that, what we have done is correct or not. For that we need to do Timing analysis by considering the ideal clocks and according to the data of analysis, we will understand that, the placement is correct or not.
 
+**Need for libraries and characterization**
 
+Every IC design Flow needs to go through several steps. First step to go through is Logic Synthesis, let's say if we have a functionality which is coded in a form of an RTL so first we need to convert the functionality into legal hardware is refered to as Logic Synthesis. Ouput of the logic synthesis is arrangement of gates that will represent the original functionality that has been described using an RTL. Next step of logic synthesis is Floorplaning, in this we import the output of logic synthesis or the netlist and decide the size of the Core and Die. The next step after floorplaning is Placement, in this we take a particular logic cell send place them on the chip in such a fashion that initial timing is better. Next step is CTS(Clock tree synthesis), in this we take care that clk should reach each and every signal at the same time also take care of each clk signal has equal rise and fall.Next step is Routing, routing has to go through the certain flow dependendent on the characterization of the flip flop.And now comes the last step STA(Static timing analysis), in this we try to see the set up time, hold time, maximum achieved frequency of the circuit. One common thing across all stages 'GATES or Cells'.This collection of gates is referred to as Library.
 
+# Placement in openlane
 
+After completing floorplanning, the design process moves on to the placement stage. The placement-related variables/switches can be seen in the README.md file under the directory path:
 
+    /Desktop/work/tools/openlane_working_dir/openlane/configuration
 
+The variable PL_TARGET_DENSITY: describes the placement density of cells in the core. It reflects how spread the cells would be in the core area. 1 = closely dense, 0= widely spread (Default: 0.55). Initially, the placement is coarse to avoid congestion. When the design approach towards closing then timing constraints come in, where the cells would be closed as much as possible to avoid delays.
 
+![image](https://github.com/user-attachments/assets/31654bce-3447-454c-9d82-fc8fceb08747)
 
+The placement step comprises two main phases:
 
+Global Placement: It is a coarse placement where no legalization is happening. During this phase, the tool determines the approximate locations for all the standard cells in the design. Detailed Placement: In this phase, the tool finalizes the exact positions for all the standard cells and ensures the placement is legal. Legalization involves verifying that no standard cells overlap and that they are all correctly positioned within the designated site rows.
+
+To initiate the placement process, use the following command:
+
+    run_placement
+During placement execution the reduction of half parameter wire length is the main focus. The placement is stop when the overflow is converged After the Placement is done. To view the results Go to the following location:
+    
+     /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/10-08_10-17/results/placement
+
+![image](https://github.com/user-attachments/assets/8945ff4d-242e-4c95-81a3-47085b0d90b4)
+
+**Load placement.def in magic layout**
+
+Change directory to path containing generated placement def
+
+    cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/29-07_10-25/results/placement/
+Command to load the placement def in magic tool
+
+    magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
+
+![image](https://github.com/user-attachments/assets/56b387df-a842-46e3-a949-55fa31c40243)
+
+![image](https://github.com/user-attachments/assets/3d776924-4c96-45dc-9906-24a896fd5d48)
+__________________________________________________________________
+
+# Cell design and characterization flows
+
+**Inputs for cell design flow**
 
 
 
