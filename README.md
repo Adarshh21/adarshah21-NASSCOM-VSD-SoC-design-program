@@ -655,9 +655,43 @@ __________________________________________________________________
 
 **Inputs for cell design flow**
 
+In Cell Design Flow, Gates, flipflops, buffers are named as 'Standard Cells'. These standard cells are being placed in the section called as 'Library'. A library has many cells with different functionalities. A libraryu also has many cells which have same functionality but differ in size and threshold voltages.
 
+![image](https://github.com/user-attachments/assets/ecc42f08-a49c-4279-bd1d-0d1f8e6dccc0)
 
+![image](https://github.com/user-attachments/assets/7967a360-c0a4-4e7d-9caa-a986cec80a7e)
 
+If you look into one of the inverter from the library the cell design flowis as follows
+
+The inverter has to represented in form of the shape, drive strength, power charracteristic and so on. Here cell design flow is devided into three parts.
+1. Inputs :
+
+   Inputs are the PDKs that we get from foundries which includes:
+    - DRC and LVS rules: These are the rulse that ensure layout compliance.
+    - Spice Models: There are some parameters in the characteristic equations that are used to model the cell and its behaviours. These parameters depend on the foundry,and are called SPICE model parameters. 
+    - library and user defined specifications: 
+      - Cell Height: The seperation between power and ground rails defines the cell height. It is the responsibility of the linrary developer to maintain cell height.
+      - Cell Width: It is dependent on timing information. The library developer is give a specification that we need drive speed from 1 to x. Higher is the drive strength high is the ability to drive huge wires.
+      - Supply Voltage: The top level designer decides on what level of supply voltage will this chip operate on and accordingly the library developer has to design the cells on that supply voltage.He also has to take care of noise margin levels with respect to that supply voltage.
+      - Metal Layers: There may be a specification that certian libraries have to be built under certian metal layers itself. For example in some cases there may be a requirement that the mettal layers, poly layers and the power rails should be built on layer 3,,4,and 5 respectively.
+      - Pin Location: The library developer has to decide on pin location based on the specification provided by user.                                         
+      
+2. Design steps: The design again involves 3 edifferent steps:
+    - Circuit Design: In circuit Design there are two steps. These are mostly based on SPICE simulations:
+       - First step is to create the logical schematic of your circuit that is implement the function itself.
+       - second step is to model the PMOS nad NMOS transistor in such a fashion in order to meet the libraray. The specification may be like W/L of PMOS is 2.5 times the W/L of NMOS. Other example is that the drain current has to be some x microamps.
+    - Layout Design: The Steps of Layout design are as follows:
+       - First step is to implement function itself based on the set of PMOS and NMOS transistors.
+       - Next step is to derive the PMOS network graph and NMOS network graph out of the design that has been implemented.
+       - After getting the network graphs next step is to obtain the Euler's path. Eule's path is basically the path which is traced only once.
+       - Next step is to draw stick diagram based on the Euler's path. This stick diagram is derived out of the circuit diagram.
+       - Next step is to convert this stick diagram into a typical Layout, adhering DRC and LVS rules we have discissed earlier and also the user defined specifications.
+       - Final step is to extract the parasatics of that particular layout and charaterise it in terms of timing. 
+    - Characterisation: It helps to get the timing noise and power information.
+4. Outputs: We get Outputs at each design phase as follows:
+    - The typical output what we get from the circuit design is CDL(circuit description language) file.
+    - The output of the layout design will be GDSll which is a typical layout files. LEF defines the width and height of the cell and extracted spice netlist(.cir) is nothing but the paracitics that is the resistance and capacitance of each and every element extracted out of a particular layout.
+    - The output of Characterization is the timing, noise and power libs. 
 
 
 
