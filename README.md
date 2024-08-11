@@ -564,9 +564,35 @@ Design Alignment Instructions:
 
 ____________________________________________________________________________
 
+# Library binding and placement
+
+**Netlist binding and initial place design**:
+
+The first and very important step in the placement and routing is to bind the netlist with the physical cells. We have the netlist of gates and shape of these gates represents the functionality of these gates. For example we have NOT gate as a tringular shape which determines that it functions as or gate, but in reality it is a box with physical dimensions it has width and height.Similarly AND gate also has a box shape in reality, Flipfops are also square boxes. So we have given the physical dimensions to all the gates and flipflops. For every component of the netlist we will give the particular shape with particular dimensions because in real world the shapes like AND,OR gates does not exists so we make them as square all the blocks also have the width and height and proper shape.
 
 
+![image](https://github.com/user-attachments/assets/a7ab8462-92e2-4889-899d-b1f417952708)
+
+Now we will remove the wires,all the gates, flipflops and blocks are present in the shelf which is called as Library.
+
+A library is a place where you can find all kinds all gates flipflops. Library also has the timing information of the perticular component like delay of the gates. Library can be devides into two sublibraries, One library consist of shape and size and other library might consist only of the delay information. The library also has information about when the component's output is changed. Library has the various flavours of each and every cell. Like same cell can have bigger size in different self, bigger the size of cell lesser the resistnce path so it will work faster and will have lesser delay. We can pick up from these what we want based on the timing conditions and available space on the floorplan.
 
 
+![image](https://github.com/user-attachments/assets/7192784d-1032-40a3-a180-89547e585702)
+
+In the image above, there are three different sets of each element. The larger elements are faster but take up more space, while the smaller elements occupy less area but operate more slowly compared to the larger ones.
+
+**Placement**:
+
+Once we have given proper shape and size to each and every gates the next step is to take those particular gates and place it on the floorplan. We have the floorplan with inout and output ports, we have particular netlist, and we have particular size given to each component of this netlist. So we have the physical view of the logic gates. Next step is to place the netlist onto the floorplan. We have to take the connectivity information from the netlist and design the physical view gates on the floorplan.
+
+
+![image](https://github.com/user-attachments/assets/76393a48-e909-4c7f-840c-a4881892eb56)
+
+Now, we have the floorplan where we have the preplaced cells from the previous slides, Placement will make sure that the pre placed cells location are not affected and they are kept as it as and the second thing which will be taken care of that is no cell should be placed over the pre-placed cells. 
+
+We need to place the physical view of the netlist onto the floorplan in such a fashion that logical connectivity should be maintained and that particular circuit should interact with their input and output ports to maintain the timing with minimal delay.
+
+![image](https://github.com/user-attachments/assets/38a95ee3-ed00-41b3-a2ab-ac9e82672712)
 
 
