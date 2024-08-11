@@ -593,6 +593,36 @@ Now, we have the floorplan where we have the preplaced cells from the previous s
 
 We need to place the physical view of the netlist onto the floorplan in such a fashion that logical connectivity should be maintained and that particular circuit should interact with their input and output ports to maintain the timing with minimal delay.
 
-![image](https://github.com/user-attachments/assets/38a95ee3-ed00-41b3-a2ab-ac9e82672712)
+We place the components of stage 1 (orange). As FF1 is connected to Din 1, it is placed near Din 1 similarly FF2 is placed near Dout 1 and in between FF1 and FF2 we place 1 and 2 with some gap between each componemnts. While placing stage 2 componemnts(yellow), FF1 is placed a bit far from Din 2 due to many reasons. FF1,1,2 and FF2 are placed very close to each other such that there is almost no delay in signal transmission, this is called as abutmend this is done for may reasons, one of them being that this circuit works at very high speed. Similarly we place stage 3 (blue) in a diagonal way as shown in the figure,there is a huge distance between 2 and FF2. The placement of stage 4 (green) is the most difficult as there is a block of preplaced cells near Din 4 hence FF1 is placed a bit far from Din 4 and FF2 is placed near Dout 4, there a huge gab betten component 1 an 2 in stage 4.
+
+![image](https://github.com/user-attachments/assets/6e8c4e0d-2b34-4643-b09e-3d648e2b6456)
+
+
+**Optimize placement using estimated wirelength and capacitence**
+
+In optimize placement we will resolve the problem of distancing. Let's take the example of FF1 to Din2. There must be a wire going from Din2 to FF1 but before going into routing the desing or wiring we will try to estimate the capacitances. If we look the capacitance from Din2 to FF1 it is very huge because wire length is huge in that case even the resistance will also be huge because of that length. If we send the signal from Din2 then it will be difficult for FF1 to catch that input because distance is large. So we can place some intermediate steps to maitain the Signal integrity. By this the input is succesfully driven to the FF1 from Din2. These intermediate steps are called here Repeaters , Repeaters are basically buffers that will recondition the original signal and make a new signal which replicates the original signal and send it forward, this process repeates untill we reach to the actual cell where we want to send the input in this way signal integrity is maintained. By using repeaters we resolve the problem of signal integrity but there will be a loose of area because more and more repeaters are used more area will be used of the particular floorplan.
+
+![image](https://github.com/user-attachments/assets/ea86420e-fe2e-48bf-9204-dc9659897732)
+
+Stage 4 circuit is a bit tricky to do as there is criscrossing of wires in that case we route one set of wires from one layer and other connection from some different layer. There is also a situation where while routing from buffer to 2 it overlaps on FF2 of stage 2 this can allso be taken care of by placing them in different layers each.
+
+![image](https://github.com/user-attachments/assets/3887d6ee-53b1-4343-9e73-48375b42c2ea)
+
+.Now we have to check that, what we have done is correct or not. For that we need to do Timing analysis by considering the ideal clocks and according to the data of analysis, we will understand that, the placement is correct or not.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
