@@ -716,5 +716,33 @@ Next step is to feed in all this inputs from 1 to 8 in a form of a configuration
 ![image](https://github.com/user-attachments/assets/98a62a10-4d7d-42ad-b8a9-0a343f267d60)
 
 ![image](https://github.com/user-attachments/assets/53e645a9-940a-41a6-81f9-9d9c3f4b3c03)
+______________________________________________________________________________________________________________________________
+
+# General timing characterization
+
+**Timing Thershold Definations**
+![image](https://github.com/user-attachments/assets/13974464-1df1-43e4-9ee1-5c4df3e5b5a9)
+
+- Slew Low Rise Threshold: Start point of the rising edge transition, that is lower side of the power supply. Its typical value is about 20% or 30% from the lower side of power supply or minimum power supply.
+- Slew High Rise Threshold: End point of the rising edge transition, that is upper side of the power supply. Its typical value is about 20% or 30% from the upper side of power supplyor maximum  power supply.
+- Slew Low Fall Threshold: Start point of the falling edge transition, that is lower side of the power supply. Its typical value is about 20% or 30% from the lower side of power supply or minimum power supply.
+- Slew High Fall Threshold: End point of the falling edge transition, that is upper side of the power supply. Its typical value is about 20% or 30% from the upper side of power supplyor maximum  power supply.
+- Input Rise Threshold: Voltage level where input is considered 'high'. Generally this point is taken at the 50% of the waveform.
+- Input Fall Threshold: Voltage level where input is considered 'low'.  Generally this point is taken at the 50% of the waveform.
+- Output Rise Threshold: Voltage level where output is considered 'high'.  Generally this point is taken at the 50% of the waveform.
+- Output Fall Threshold: Voltage level where output is considered 'low'.  Generally this point is taken at the 50% of the waveform.
+
+![image](https://github.com/user-attachments/assets/bc541039-a09d-4620-8ddd-072f3f3d7dc5)
+
+![image](https://github.com/user-attachments/assets/ad7e8257-dccd-4375-b144-4bb848835231)
+
+
+
+
+
+
+
+
+
 
 
