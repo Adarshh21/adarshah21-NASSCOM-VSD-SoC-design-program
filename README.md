@@ -489,6 +489,53 @@ The priority is given to *sky130A_sky130_fd_sc_hd_config.tcl*, then *config.tcl*
 Now we are ready to run the floorplan using the command:
 
     run_floorplan
+_________________________________________
+
+# Review floorplan files
+
+After floorplan execution we go to the runs folder of picorv32a and open the latest date file name. Here one can check the implemented floorplan variables from the logs. The file name ioPlacer.log will give metal layers number for verical and horizontal IO pins. The path to the file is below:
+
+    /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/10-08_10-17/logs/floorplan
+
+![image](https://github.com/user-attachments/assets/c61d2327-8aa6-4d1e-8e5d-d6e6f88a3f7a)
+
+The contents of the file are shown beow:
+![image](https://github.com/user-attachments/assets/8ad6a5da-db58-46ef-8278-7389f322a92f)
+
+Now to check what configuration settings were used to run floorplan we can open the config.tcl from the directory given below:
+
+    /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/10-08_10-17
+
+![image](https://github.com/user-attachments/assets/583d2b14-11bd-4659-a685-5862ea23cb50)
+
+Now we can observe that the IO Vmetal and Hmetal yayers are changed to 4 and 3 while the core utilization has changed to 35% but we had set it to 65% in *config.tcl* file this is due to the fact that the core utilization percentage was set to 35 in *sky130A_sky130_fd_sc_hd_config.tcl* which has the highest priority.
+
+We view the results of the floorplan in the results path of picorv32a. the path is as shown
+
+    /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/10-08_10-17/results/floorplan
+![image](https://github.com/user-attachments/assets/236c7a42-1940-4ae5-beba-be9a1b6dbd92)
+
+we can see a design exchange file (.def) which has some useful information:
+
+![image](https://github.com/user-attachments/assets/d9418ac6-a236-48ef-9756-2451840f2ab7)
+
+**Calculate the die are in microns**
+
+1000 unit distance microns = 1µm. 
+
+Hence to calculate the die area in micrometer we divide the die height and widh by 1000.
+
+Die width in µm = (660685 − 0)/1000 = 660.685 µm
+
+Die height in µm = (671405−0)/1000 = 671.405 µm
+
+Area of die in micron = 660.685 x 671.405 = 443,587.212425 sq µm.
+
+Now, to open this ".def" file in magic, use the following command:
+
+    magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
+
+
 
 
 
