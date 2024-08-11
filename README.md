@@ -429,7 +429,60 @@ Complete knowledge of the functionality of the design is required to understand 
 ![image](https://github.com/user-attachments/assets/6cfc9d4b-a22e-4c7e-9a56-e1d3f315b734)
 
 Once the pin placement is done the next step is to block the area between the core and die for automatic placement and routing tool. So we do a logical placement cell blockage in that area. Now our floorplan is ready for placement and routing.
-_______________________________________________
+_______________________________________________\
+
+# Lab 2 : Floor Planning and Placement
+
+**Steps to run Floorplan**:
+
+To ensure a smooth floorplanning process, designers must pay attention to certain variables, known as switches, which can significantly impact the floorplan. For instance, the utilization factor and aspect ratio are among the important switches. Designers need to verify that these parameters align with the project requirements before initiating the floorplanning stage. The file README.md in the openlane configuration displays the different variables of the design flow. The path is shown below :
+
+    Desktop/work/tools/openlane_working_dir/openlane/configuration
+![image](https://github.com/user-attachments/assets/adede6f2-fa0d-4028-85cd-c1dd401e1075)
+
+The image below illustrates various types of switches involved in the floorplanning phase and their description inside thr README.md file.
+
+![image](https://github.com/user-attachments/assets/2e5f68c1-a8e8-4542-bb3b-75ec4bef16aa)
+
+One can set any of these variables depending on where we are in the flow.
+
+The default value of these variables is set in the floorplan.tcl file of openlane configuration. The file path is the same as for README.md and is shown below :
+    
+    Desktop/work/tools/openlane_working_dir/openlane/configuration
+
+![image](https://github.com/user-attachments/assets/78de6c16-f3f5-4bbb-914c-a7f2da3665a7)
+
+In the figure above several floorplan variables are set by default. One important variable to mention here is FP_IO_MODE which is highlighted in the figure. This is set as 1 which means are the pins are set random and equidistant.
+
+In the picorv32a design, there are *config.tcl* and *sky130A_sky130_fd_sc_hd_config.tcl* files which contain design-specific floorplan settings.
+
+The file path is shown in the image below:
+
+    Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a
+
+![image](https://github.com/user-attachments/assets/db745457-c9cc-4aa8-ab4d-3c0ddd16252b)
+
+The contents of  *sky130A_sky130_fd_sc_hd_config.tcl* file are shown below
+
+![image](https://github.com/user-attachments/assets/075a4e30-37d1-41db-9aaa-1c8c4486e1f5)
+
+Similarly the contents of  *config.tcl* file are shown below
+
+![image](https://github.com/user-attachments/assets/082a3e7d-c088-485a-ac39-8c6871e0b466)
+
+The core utilization and IO metal layers are added in the file through following text
+
+    set ::env(CLOCK_NET) $::env(CLOCK_PORT)
+    set ::env(FP_CORE_UTIL) 65 
+    set ::env(FP_IO_VMETAL) 4
+    set ::env(FP_IO_HMETAL) 3
+
+
+
+
+
+
+
 
 
 
