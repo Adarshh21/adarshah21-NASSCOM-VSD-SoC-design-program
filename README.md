@@ -411,3 +411,30 @@ The final power planning will be as shown:
 ![image](https://github.com/user-attachments/assets/72969424-2e46-41fb-b527-90cdad19ba3a)
 
 ______________________________________________________
+
+# Pin placement and logical placement blockage
+
+![image](https://github.com/user-attachments/assets/973aa1f2-fb38-447e-8667-fb7602d944b2)
+
+Let us consider a circuit a sample circuit with inputs and clocks connected to the flip flops, logic gates and pre placed blocks. Now complete design becomes like given below which has 6 input ports and 5 output ports. This types of circuits are very much helpful to understand the timing analysis of inter clocks. 
+
+The connectivity information between the gates is coded using VHDL/Verilog language and is called as 'Netlist'.
+
+![image](https://github.com/user-attachments/assets/12046bb9-765b-440b-944d-b0afd98628ad)
+
+The area between core and die is used to place the pins. The general trend is to put all the input pins on left side and output pins on the right, but it varies from designer to designer or design to design. Some might prefer to put input pins at top and output pins at bottom. Some may prefer to put input pins on left and top, and the output pins on right and bottom. We follow the general trend and place the input pins on left side and output pins on right side. we can observe that the ordering of input and output pins is random and not in order. This is due to the reason that where we are planning to place the cells.
+
+Complete knowledge of the functionality of the design is required to understand the pin placement. This creates a handshake between frontend and backend team. The frontend team defines the netlist connectivity while the backend team decides the pin placements. The second thing to observe is the clock pins, the clock ports are bigger than the data ports the reason is that these clock ports drive all the flops in the complete chip continiously, hence they need the least resistance path to travel. Bigger is the size lower is the resistance.
+
+![image](https://github.com/user-attachments/assets/6cfc9d4b-a22e-4c7e-9a56-e1d3f315b734)
+
+Once the pin placement is done the next step is to block the area between the core and die for automatic placement and routing tool. So we do a logical placement cell blockage in that area. Now our floorplan is ready for placement and routing.
+_______________________________________________
+
+
+
+
+
+
+
+
