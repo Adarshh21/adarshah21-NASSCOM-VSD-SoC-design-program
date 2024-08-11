@@ -470,16 +470,25 @@ Similarly the contents of  *config.tcl* file are shown below
 
 ![image](https://github.com/user-attachments/assets/082a3e7d-c088-485a-ac39-8c6871e0b466)
 
-The core utilization and IO metal layers are added in the file through following text
+The core utilization and IO metal layers are added in the file through following text by opening the *config.tcl* file in the GVim/Vim app and editing it.
 
     set ::env(CLOCK_NET) $::env(CLOCK_PORT)
     set ::env(FP_CORE_UTIL) 65 
     set ::env(FP_IO_VMETAL) 4
     set ::env(FP_IO_HMETAL) 3
+We have set the flooplan IO vertical metal as layer 4 and horizontal metal as layer 3. In the openlane flow the vmetal and hmetal are 1 more than what is specified.
 
+![image](https://github.com/user-attachments/assets/5e435656-3c3b-4f4c-84db-df7f87b2ad46)
 
+Hence the edited *config.tcl* file fine be viewed from the terminal window :
 
+![image](https://github.com/user-attachments/assets/5f67b188-870f-4dca-917f-01ba1f70dd73)
 
+The priority is given to *sky130A_sky130_fd_sc_hd_config.tcl*, then *config.tcl* and then to the default *floorplan.tcl* file above.
+
+Now we are ready to run the floorplan using the command:
+
+    run_floorplan
 
 
 
