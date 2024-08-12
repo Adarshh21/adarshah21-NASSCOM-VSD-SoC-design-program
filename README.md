@@ -737,20 +737,27 @@ ________________________________________________________________________________
 ![image](https://github.com/user-attachments/assets/ad7e8257-dccd-4375-b144-4bb848835231)
 
 
+Propogation Delay:
+Time for a signal to propagate through a circuit element. Measured at the 50% points of input and output transitions. Affects circuit speed.
 
-
-
-
+Let us consider the buffer circuit. Red waveform reperesents the Inverter output while blue represets the Buffer output. If we choose the threshold point as 50%, the calculation of propogation delay is as shown in figure:
 ![image](https://github.com/user-attachments/assets/a08ce69d-5574-4317-85fc-1272ae4dca1e)
 
+If we choose the threshold point as 66.66%, the calculation of propogation delay is as shown in figure:
 ![image](https://github.com/user-attachments/assets/6582f59b-ef46-4eab-a908-df9bae929f5c)
 
+We can see that the propogation delay is negative which is not desirasble. This happens due to the poor choice of threshold points.
 
+There is another exaple in which even though threshold point is desired one still we have negative propogation delay:
 ![image](https://github.com/user-attachments/assets/7b0fa50b-ff80-4a3c-9c4f-ef554129c880)
 
 ![image](https://github.com/user-attachments/assets/1c69ebef-3a29-48a8-a7ec-7e6c6236ba7d)
 
+This happens due to the timing delay between the two inverters due to which the inverter output streches as shown.
 
+Transition Time:
+
+Time for a signal to transition between voltage levels. Rise time (tr): 20% to 80% transition. Fall time (tf): 80% to 20% transition. Affects signal integrity and performance.
 ![image](https://github.com/user-attachments/assets/adbdfbe0-5d88-4de3-9952-3ab995038b79)
 
 
