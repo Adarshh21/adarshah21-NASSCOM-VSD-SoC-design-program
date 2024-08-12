@@ -806,7 +806,23 @@ Now, let us open it in magic using the earlier used command and we see that IO p
 
 **SPICE deck creation for CMOS inverter**
 
+SPICE Deck is nothing but connectivity informationabout the netlist. It is basically a netlist that has got every information. It has got the connectivity information, the inputs that have to be provided to the simulation, it has got tap points at which we take the outputs and so on.
 
+![image](https://github.com/user-attachments/assets/0ac62637-5d1f-45f3-a3da-59d0df6fa9d4)
+
+Steps for SPICE deck creation for CMOS inverter:
+- **Component connectivity**: In this we need to define the connectivity of the substrate pin. Substrate pin tunes the threshold voltage of the PMOS and NMOS.
+- **Component values**: Values for the PMOS nad NMOS. We have taken the same size of both PMOS and NMOS.
+- **Identify the nodes**: Node mean the points between which there is a component.These nodes are required to define the netlist.
+- **Name the nodes**: Now we wiil name these nodes as Vin, Vss, Vdd, out.
+- **Connections**:
+  - For M1 MOSFET drain is connected to out node, gate is connected to in node, substrate and Source is connected to Vdd node. It is a  PMOS transistor.
+  - For M2 MOSFET drain is connected to out node, gate is connected to in node, source and substrate are connected to 0. It is a  NMOS transistor.
+  - C load is connected between out and the node 0. And it's value is 10fF.
+  - Supply voltage(Vdd) which is connected between Vdd and node 0 and value of it is 2.5. Usually the  Vdd value is a multiple of channel length of MOS.
+  - Similarly we have input voltage which is connected between Vin and node 0 and its value is 2.5.
+- SIMULATION COMMANDS: Now we have to give the simulation commands in which we are swiping the Vin from 0 to 2.5 with the stepsize of 0.05. Because we want Vout while changing the Vin.
+- Final modelling: Final step is to model files. It has the complete description about NMOS and PMOS.
 
 
 
