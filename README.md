@@ -737,7 +737,8 @@ ________________________________________________________________________________
 ![image](https://github.com/user-attachments/assets/ad7e8257-dccd-4375-b144-4bb848835231)
 
 
-Propogation Delay:
+**Propogation Delay**:
+
 Time for a signal to propagate through a circuit element. Measured at the 50% points of input and output transitions. Affects circuit speed.
 
 Let us consider the buffer circuit. Red waveform reperesents the Inverter output while blue represets the Buffer output. If we choose the threshold point as 50%, the calculation of propogation delay is as shown in figure:
@@ -755,9 +756,61 @@ There is another exaple in which even though threshold point is desired one stil
 
 This happens due to the timing delay between the two inverters due to which the inverter output streches as shown.
 
-Transition Time:
+**Transition Time**:
 
 Time for a signal to transition between voltage levels. Rise time (tr): 20% to 80% transition. Fall time (tf): 80% to 20% transition. Affects signal integrity and performance.
 ![image](https://github.com/user-attachments/assets/adbdfbe0-5d88-4de3-9952-3ab995038b79)
+
+# Day 3 Design library cells using magic layout and ngspice characterization
+
+# D3 SK1 Labs for CMOS Inverter and ngspice simulation
+
+**IO PLACER REVISION**
+
+Till now, we have done floor planning and run placement also. But if we want to change the floorplanning, for example, in our floor planning, pins are at equal distance and if we want to change it then we can also make it by Set command. In this way openlane provides us iterative flow which helps us to make changes view resukts and make changes again in the same file.
+
+TO CHANGE THE IO pins alignment in the layout, first we can verify the current configuration of the Pins, Go to the following directory as shown in the image below:
+
+    /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/10-08_10-17/results/floorplan
+Then use the command to open the '.def' file in magic:    
+
+    magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
+
+![image](https://github.com/user-attachments/assets/5037df88-4914-4fb7-bf8d-afacd9667032)
+
+As we can see pins are randomly equidistant. There are four strategies supported by IO placer (Open source EDA tool). Now, if want it to change to some other IO pins strategy, first go to the following directory and open floorplan.tcl file:
+
+    /Desktop/work/tools/openlane_working_dir/openlane/configuration
+
+![image](https://github.com/user-attachments/assets/21d42020-3651-4d86-a710-9a9bffe466fd)
+
+From here we can see the switching variable FP_IO_MODE = 1, hence pins are randomly equidistant. Now, we run the following command and change the IO placer settings:
+
+    set ::env(FP_IO_MODE) 2
+
+Go to the tab below to run the command to change the IO placer settings and run the floorplan again.
+
+![image](https://github.com/user-attachments/assets/02e25b66-e6e2-47ca-a985-559232b6ab35)
+
+We see that PDN generation was successful.
+
+![image](https://github.com/user-attachments/assets/69005301-6d2d-4c0d-8d03-b19cb5647ea5)
+
+Now, we can check the change in the IO placer strategy: We can see that .def file has been updated from the time stamps and date:
+
+![image](https://github.com/user-attachments/assets/cc511fe1-ed41-420a-bca2-109c3a9009dd)
+
+Now, let us open it in magic using the earlier used command and we see that IO pin configuration is changed
+
+![image](https://github.com/user-attachments/assets/dbad8c82-0d6e-4587-8669-487fd87ed5c4)
+
+**SPICE deck creation for CMOS inverter**
+
+
+
+
+
+
+
 
 
