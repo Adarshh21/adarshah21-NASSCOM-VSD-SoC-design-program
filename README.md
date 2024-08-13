@@ -888,3 +888,22 @@ Now, open the sky130_inv.mag file in magic:
     magic -T sky130A.tech sky130_inv.mag &
 
 ![image](https://github.com/user-attachments/assets/c9b31f25-280b-4353-9af5-230b1382682f)
+____________________________________________________________
+
+# Inception of layout and CMOS fabrication process
+
+**16 Mass CMOS Process**
+1. Selection of substrate:
+
+   Substrate is something on which we fabricate our complete design. The layout that we see gets fabricated on the substrate itself. The most commonly used substrate is a p-type substrate with the folliwing properties ie, high resistivity and the doping concentration which is the process of adding foreign impurity in p-type substrate and the orientation.
+
+   The dopping level is usually 10^15 cm^3 .The reason for having this kind of doping level is that the doping concentration of substrate should be less than that of well doping.
+2. Creating active region for transistors:
+   Active region is the place where we actually place our PMOS and NMOS. The first step to do it is to create the isolation between the wells or pockets which we are gonna form. To do that we first grow a Silicon dioxide SiO2 of 40nm on p-type substrate which acts as a very good insulator. Next we place a Silicon Nitrate Si3N4 of 80nm, next we deposit 1um layer of photoresist on wnhich we create Mask 1. Then we apply UV light to the mask1. 
+ ![image](https://github.com/user-attachments/assets/e9563274-28ab-4c49-b4ef-14304cee61ed)
+
+  The mask protects the UV light from hitting the photoresist, the part of photoresist that is exposed to UV light gets washed away. Next we remove the mask 1, Next we etch off the Silicon Nitrate, the region below the phohoresist is protected again. next we remove the photoresist itself because Silicon Nitrate itself acts as a protection layer to grow the oxides on the other areas. 
+
+
+
+
