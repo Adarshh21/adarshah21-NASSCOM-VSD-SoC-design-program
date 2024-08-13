@@ -771,7 +771,7 @@ Till now, we have done floor planning and run placement also. But if we want to 
 
 TO CHANGE THE IO pins alignment in the layout, first we can verify the current configuration of the Pins, Go to the following directory as shown in the image below:
 
-    /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/10-08_10-17/results/floorplan
+    home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/10-08_10-17/results/floorplan
 Then use the command to open the '.def' file in magic:    
 
     magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
@@ -780,7 +780,7 @@ Then use the command to open the '.def' file in magic:
 
 As we can see pins are randomly equidistant. There are four strategies supported by IO placer (Open source EDA tool). Now, if want it to change to some other IO pins strategy, first go to the following directory and open floorplan.tcl file:
 
-    /Desktop/work/tools/openlane_working_dir/openlane/configuration
+    home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/configuration
 
 ![image](https://github.com/user-attachments/assets/21d42020-3651-4d86-a710-9a9bffe466fd)
 
@@ -816,17 +816,75 @@ Steps for SPICE deck creation for CMOS inverter:
 - **Identify the nodes**: Node mean the points between which there is a component.These nodes are required to define the netlist.
 - **Name the nodes**: Now we wiil name these nodes as Vin, Vss, Vdd, out.
 - **Connections**:
-  - For M1 MOSFET drain is connected to out node, gate is connected to in node, substrate and Source is connected to Vdd node. It is a  PMOS transistor.
+  - For M1 MOSFET drain is connected to out node, gate is connected to in node, source and substrate are connected to Vdd node. It is a  PMOS transistor.
   - For M2 MOSFET drain is connected to out node, gate is connected to in node, source and substrate are connected to 0. It is a  NMOS transistor.
-  - C load is connected between out and the node 0. And it's value is 10fF.
+  - C load is connected between out node and the node 0. And it's value is 10fF.
   - Supply voltage(Vdd) which is connected between Vdd and node 0 and value of it is 2.5. Usually the  Vdd value is a multiple of channel length of MOS.
   - Similarly we have input voltage which is connected between Vin and node 0 and its value is 2.5.
-- SIMULATION COMMANDS: Now we have to give the simulation commands in which we are swiping the Vin from 0 to 2.5 with the stepsize of 0.05. Because we want Vout while changing the Vin.
+- SIMULATION COMMANDS: Now we have to give the simulation commands in which we are sweeping the Vin from 0 to 2.5 with the stepsize of 0.05. Because we want Vout while changing the Vin.
 - Final modelling: Final step is to model files. It has the complete description about NMOS and PMOS.
+![image](https://github.com/user-attachments/assets/4b9aaf06-5e69-4bac-a3d3-4b0f6fd25088)
 
+We set the Wn=Wp= 0.375um and Lp=Ln=0.25um Hence the W/L ratio of PMOS and NMOS is 1.5
 
+The SPICE simulation for this specifications is shown:
+![image](https://github.com/user-attachments/assets/03d675ce-0bfe-4241-8d9d-0c6eaf48f5f4)
 
+We can see that the transfer characteristics is shifted towards the left.
 
+Next We set the Wp= 0.375um , Wn= 0.9375um and Lp=Ln=0.25um Hence the W/L ratio of PMOS is 3.75 and NMOS is 1.5
+![image](https://github.com/user-attachments/assets/fd8e7c54-2fa6-4d59-bb6b-73a2fc51a25a)
 
+We can see that the transfer characteristics is at the centre of voltage range.
 
+On comparing both the cases we see that the output waveform shapes are same. This says that the CMOS is a robust device. It means that whener input is 0 output is 1 and whenever the input is 1 the output is 0. The parameters that explain the robustness of CMOS are:
 
+**Switching Threshold**:
+
+Switching thresold, Vm (the point at which the device switches the level) is the one of the parameter that defined the robustness of the Inverter. Switching thresold is a point at which Vin=Vout.
+
+![image](https://github.com/user-attachments/assets/29c94068-4205-4ea5-a3a9-6fde3a37d69d)
+
+At switching voltage Vm both the PMOS and NMOS are in saturation region ie, both the PMOS and NMOS are on. This means that the gate voltage is very very greater than the threshold voltage and the currents flowing in PMOS and NMOS are same but opposite in direction.
+
+![image](https://github.com/user-attachments/assets/fd7d893e-f276-4bd2-9053-4b34a56adfb5)
+
+**STATIC AND DYNAMIC BEHAVIOUR OF CMOS**
+![image](https://github.com/user-attachments/assets/c8bd4d35-f566-4731-ad89-0362aafd587c)
+
+In Dynamic simulation we will know about the rise and fall delay of CMOS inverter and how does it varying with Vout. In this simulation everything else will remian same except the input which is provided will be a pulse and simulation command will be .tran
+
+The graph Time vs Voltage will be plotted here from where we can calculate the rise and fall delay
+![image](https://github.com/user-attachments/assets/b5624549-48b9-4797-9b6a-97acd6e81c9f)
+
+To calculate the rise delay we choose the 50% point of output and mark its timing and then we substract it from the timing of 50% mark of input similarly we do it for falling input and output to calculate fall delay.
+
+**Steps to get clone of git "vsdstdcelldesign" repo**
+
+The repository "vsdstdcelldesign" contains the .mag file for the inverter and spice models for sky130 nmos/pmos transistors.
+
+Got to the openlane directory and run the following command to clone the git repository:
+    
+    git clone https://github.com/nickson-jose/vsdstdcelldesign.git
+
+![image](https://github.com/user-attachments/assets/7962006b-ef48-4e04-8a80-c18b5173df99)
+
+As we can see from the above image the repo has been successfully copied to the openlane directory. Now, we will open the .mag file and to do that we require the sky130A.tech file from the following directory:
+
+    /Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic
+
+we copy the file in the .mag file locattion using the following command
+
+    cp sky130A.tech /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
+
+![image](https://github.com/user-attachments/assets/df533468-1a5b-4966-b611-7bb8c3faa05a)
+
+Now we see that the *sky130A.tech* file is copied in the Vsdstdcelldesign folder
+
+![image](https://github.com/user-attachments/assets/032ca3b8-b624-42c0-ac74-af79efd1564e)
+
+Now, open the sky130_inv.mag file in magic:
+
+    magic -T sky130A.tech sky130_inv.mag &
+
+![image](https://github.com/user-attachments/assets/c9b31f25-280b-4353-9af5-230b1382682f)
