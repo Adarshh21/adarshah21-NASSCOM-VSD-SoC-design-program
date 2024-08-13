@@ -902,7 +902,84 @@ ____________________________________________________________
    Active region is the place where we actually place our PMOS and NMOS. The first step to do it is to create the isolation between the wells or pockets which we are gonna form. To do that we first grow a Silicon dioxide SiO2 of 40nm on p-type substrate which acts as a very good insulator. Next we place a Silicon Nitrate Si3N4 of 80nm, next we deposit 1um layer of photoresist on wnhich we create Mask 1. Then we apply UV light to the mask1. 
  ![image](https://github.com/user-attachments/assets/e9563274-28ab-4c49-b4ef-14304cee61ed)
 
-  The mask protects the UV light from hitting the photoresist, the part of photoresist that is exposed to UV light gets washed away. Next we remove the mask 1, Next we etch off the Silicon Nitrate, the region below the phohoresist is protected again. next we remove the photoresist itself because Silicon Nitrate itself acts as a protection layer to grow the oxides on the other areas. 
+  The mask protects the UV light from hitting the photoresist, the part of photoresist that is exposed to UV light gets washed awaymthis process is called photolithography. Next we remove the mask 1, Next we etch off the Silicon Nitrate, the region below the phohoresist is protected again. next we remove the photoresist itself because Silicon Nitrate itself acts as a protection layer to grow the oxides on the other areas. 
+
+![image](https://github.com/user-attachments/assets/0c8599c8-d062-4fc7-9d97-174b9f05f929)
+
+We put this entire thing into a furnace which have temperature of about 900-1000C, which helps to grow oxide layer in other areas in which silicon nitrate is not present. This is called as field oxide and the process is called as LOCOS ( Local Oxidation of Silicon).
+
+![image](https://github.com/user-attachments/assets/6cc0144d-2859-4af4-b382-5d65019b1dc3)
+
+3. N-Well and P-Well formation:
+   N-Well is used for PMOS application and P-Well is used for NMOS application, we cannot form N-Well and P-Well at the same time. We again do the same process, we put a layer of photoresist then put a mask 2 and wash it by subjecting it to UV light. Next we remove the Mask 2. Then we do ion implantation to form p-well using boron which is p type material. We need the energy of 200keV to diffuse the boron through oxide layer to form P-Well.
+
+![image](https://github.com/user-attachments/assets/0f64490d-900e-4027-8722-51a671be1cdc)
+
+Then we use the same process to form N-Well by using Mask 3 and ion implantation of Phosperous using the energy of 400eV.
+
+![image](https://github.com/user-attachments/assets/041ca279-7546-4da1-9bcf-fc55f23583ec)
+
+Then we place the complete structure into a high temperature furnace called as dry wind furnace which is placed at high temperature of about 1100C for 4 to 6 hours that will diffuse the boron and phosperous into forming clear wells. This is known as Twin tub process.
+
+![image](https://github.com/user-attachments/assets/8b87a154-c85d-4e89-9a8a-cc737d555365)
+
+4. Formation of Gate:
+
+Gate bifer is the most important terminal of the NMOS or PMOS transistor because that is where we control the threshold voltage which is the turning on voltage of the transistor. So maintaining that voltage is very important so fabrigating gate voltage is very crutial.
+
+![image](https://github.com/user-attachments/assets/213f7e6c-55f2-431a-9ebb-00fbd26bd740)
+
+We can see from the snippet that the threshold voltyage is dependent on  the body effect coefficient gamma which iis factored by Doping concentration and oxide capacitance. Hence thses are the two important terms for gate formation as they control Vt.
+
+We again follow the same process using mask 4 and we have p-well exposed with boron for ion implantation we use the dose of boron so as to maintain the required doping concentration which is dependent on Vt , at 60keV which is low energy than used during formation of p well. Similarly we do the same process for NMOS also using Mask 5 and controlling the ion implantation of arsenic  so as to maintain the required doping concentration which is dependent on Vt.
+
+![image](https://github.com/user-attachments/assets/c0a9da20-aed6-41d4-aab0-8995a094b2c9)
+
+During the process of ion implantation the oxide layer gets damaged so we etch the oxide layer using hydroflouric acid solution, then we again regrow the oxide layer of required concentration to maintain the required Vt. Next we deposit a polysilicon layer roughly about 0.4 micron. The gate area is supposed to be low resistance so we implant a N-type arsenic or polysilicon layer which has a low sheet resistance. Next we use the mask 6 and repeat the same procedure to get gate layer.
+
+![image](https://github.com/user-attachments/assets/1870f090-cbc8-4dca-9ef0-1c42357cc96f)
+
+5. Lightly Doped Drain (LDD) formation:
+   We want to attain a doping profile of P+ P- N in the N-well where P+ is the source and drain , P- is the LDD and N is already done. similary P-well will have a doping profile of N+ for p source and drain and P is what we already have.
+
+    There are 2 reasons to form LDD:
+    - Hot electron effect: Electric field is given by V/d therefore when the device size reduces Electric field increases. Due to this high energy carriers break the Si-Si bond leading to some more elecrons and holes which we do need because we are controlling the doping profile very well. The second reason is that the energy might be so high that it crosses the 3.2eV barrier between the Si conduction band and SiO2 conduction band, if it crosses this band it might just enter into the oxide layer which is present above the substrate and my create liability issue.This is the hot electron effect.
+  
+    - Short channel effect: When the device size reduces the short channels move from basically 1 micron gate length to 0.5 micron gate length. Because of this the drain field or voltage penitrates into the channel area thus it becomes difficult for the gate to control the current.
+
+    The process remains same to generate the LDD layers as we did in the past, we use the Mask 7, so in case of p well we create NMOS so we add a n type material Phosperous. The doses and energy of phosperous are carefully chosen so that the N- implant dosent penetrates well into the P-well. Similarly we implement the same process using mask 8 to implant P- ions carefully so that they dont penetrate into the N-well.
+
+![image](https://github.com/user-attachments/assets/314da651-1113-416c-9bb5-ca21970b3ad7)
+
+When we fabricate source and drain they will try to disturb this LDD layer, hence we have to protect this LDD structure. We create side wall spacers to accomplish this, to do this we deposit a layer of SiO2 or Si3N4 layer of 0.1um on the complete structure. then we do anisotrophic plasma etching which is a directed etching which etches everything except the oxides at the side walls. The layer of LDD below this side wall will be protected.
+
+![image](https://github.com/user-attachments/assets/d76ee9a0-e2ce-4a70-878c-7222e487cf69)
+
+6. Source and Drain formation:
+  We add a thin layer of screen oxide to avoid the effect of channeling. Channeling is the effect where when we do a lot of ion implantation, if the vector velocity of the ions matches to that of the crystalline structure of the p type substrate, the ions may go deep into the p type substrate without even hitting any silicon atoms. It will help to ranc=domize the direction of implantation and they will try to settle down in the areas that we want them to settle.
+
+Next we use Mask 9 to expose the p well using the samy photo lithography process. Then we ion implant the arsenic at 75keV which is n type impurity, the arsenic settles in the source and drain but the LDD are still maintained below the side walls. similarly we use the mask 10 to expose n well and we ion implant it with boron at 50keV 
+
+![image](https://github.com/user-attachments/assets/8966e496-bf32-4079-bb89-43e111270c8a)
+
+Next we put the hald built Mosfet into the high temperature furnace for  temperature of about 1000C and then we expose this to high temperature anelling which will push the N+ and the P+ impurities  even more into p substrate.
+   
+![image](https://github.com/user-attachments/assets/cbc4e94e-bab5-4811-b2c1-4626243d79cc)
+
+7. Steps to form contacts and interconnects:
+   First we remove the thin screen oxide that we had deposired by etching it with Hydroflouride solution. Next we deposit a titanium metal having low resistivity , using sputtering method. We hit titanium metal with argon gases then the particles of the metals or the titanium atoms get sputtered or removed from titanium metal and get settled on the substrate.
+
+![image](https://github.com/user-attachments/assets/ede609d2-565b-4cbe-997d-8675b86a1446)
+
+Next step is to create a contact between titanium metal that we have deposited and the source, drain and gate terminals, to do this we heat it into a nitrogen ambient at the temperature of 650-700C for 60 seconds. Certian chemical reactions occur and result into Titanium silicon dioxide  TiSi2, these are low resistive contacts which are being made at source drain and gate. there is another reaction that occurs between titanium and nitride and the nitrogen ambient to form Titanium Nitride TiN and this is used only for local communication because of the kind of resistibity that it has.
+
+![image](https://github.com/user-attachments/assets/c5abd8b0-ccff-4289-8640-cb3cc88c1a5f)
+
+We again use the photolithography using mask 11 to form the local connections, where we etch off the extra titaniun nitrate we have using RCA cleaning, which is the solution  with 1 part of deionized water , 1 part of ammonium hydroxide and 1 part of hydrogen peroxide.
+
+![image](https://github.com/user-attachments/assets/3e72c75d-e1e4-48cc-acc9-b3c23c668a00)
+
+
 
 
 
