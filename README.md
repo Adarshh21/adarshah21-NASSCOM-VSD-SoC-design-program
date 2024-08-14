@@ -893,13 +893,10 @@ ____________________________________________________________
 # Inception of layout and CMOS fabrication process
 
 **16 Mass CMOS Process**
-1. Selection of substrate:
-
-   Substrate is something on which we fabricate our complete design. The layout that we see gets fabricated on the substrate itself. The most commonly used substrate is a p-type substrate with the folliwing properties ie, high resistivity and the doping concentration which is the process of adding foreign impurity in p-type substrate and the orientation.
+1. **Selection of substrate**: Substrate is something on which we fabricate our complete design. The layout that we see gets fabricated on the substrate itself. The most commonly used substrate is a p-type substrate with the folliwing properties ie, high resistivity and the doping concentration which is the process of adding foreign impurity in p-type substrate and the orientation.
 
    The dopping level is usually 10^15 cm^3 .The reason for having this kind of doping level is that the doping concentration of substrate should be less than that of well doping.
-2. Creating active region for transistors:
-   Active region is the place where we actually place our PMOS and NMOS. The first step to do it is to create the isolation between the wells or pockets which we are gonna form. To do that we first grow a Silicon dioxide SiO2 of 40nm on p-type substrate which acts as a very good insulator. Next we place a Silicon Nitrate Si3N4 of 80nm, next we deposit 1um layer of photoresist on wnhich we create Mask 1. Then we apply UV light to the mask1. 
+2. **Creating active region for transistors**: Active region is the place where we actually place our PMOS and NMOS. The first step to do it is to create the isolation between the wells or pockets which we are gonna form. To do that we first grow a Silicon dioxide SiO2 of 40nm on p-type substrate which acts as a very good insulator. Next we place a Silicon Nitrate Si3N4 of 80nm, next we deposit 1um layer of photoresist on wnhich we create Mask 1. Then we apply UV light to the mask1. 
  ![image](https://github.com/user-attachments/assets/e9563274-28ab-4c49-b4ef-14304cee61ed)
 
   The mask protects the UV light from hitting the photoresist, the part of photoresist that is exposed to UV light gets washed awaymthis process is called photolithography. Next we remove the mask 1, Next we etch off the Silicon Nitrate, the region below the phohoresist is protected again. next we remove the photoresist itself because Silicon Nitrate itself acts as a protection layer to grow the oxides on the other areas. 
@@ -910,8 +907,7 @@ We put this entire thing into a furnace which have temperature of about 900-1000
 
 ![image](https://github.com/user-attachments/assets/6cc0144d-2859-4af4-b382-5d65019b1dc3)
 
-3. N-Well and P-Well formation:
-   N-Well is used for PMOS application and P-Well is used for NMOS application, we cannot form N-Well and P-Well at the same time. We again do the same process, we put a layer of photoresist then put a mask 2 and wash it by subjecting it to UV light. Next we remove the Mask 2. Then we do ion implantation to form p-well using boron which is p type material. We need the energy of 200keV to diffuse the boron through oxide layer to form P-Well.
+3. **N-Well and P-Well formation**: N-Well is used for PMOS application and P-Well is used for NMOS application, we cannot form N-Well and P-Well at the same time. We again do the same process, we put a layer of photoresist then put a mask 2 and wash it by subjecting it to UV light. Next we remove the Mask 2. Then we do ion implantation to form p-well using boron which is p type material. We need the energy of 200keV to diffuse the boron through oxide layer to form P-Well.
 
 ![image](https://github.com/user-attachments/assets/0f64490d-900e-4027-8722-51a671be1cdc)
 
@@ -923,9 +919,7 @@ Then we place the complete structure into a high temperature furnace called as d
 
 ![image](https://github.com/user-attachments/assets/8b87a154-c85d-4e89-9a8a-cc737d555365)
 
-4. Formation of Gate:
-
-Gate bifer is the most important terminal of the NMOS or PMOS transistor because that is where we control the threshold voltage which is the turning on voltage of the transistor. So maintaining that voltage is very important so fabrigating gate voltage is very crutial.
+4. **Formation of Gate**: Gate bifer is the most important terminal of the NMOS or PMOS transistor because that is where we control the threshold voltage which is the turning on voltage of the transistor. So maintaining that voltage is very important so fabrigating gate voltage is very crutial.
 
 ![image](https://github.com/user-attachments/assets/213f7e6c-55f2-431a-9ebb-00fbd26bd740)
 
@@ -939,8 +933,7 @@ During the process of ion implantation the oxide layer gets damaged so we etch t
 
 ![image](https://github.com/user-attachments/assets/1870f090-cbc8-4dca-9ef0-1c42357cc96f)
 
-5. Lightly Doped Drain (LDD) formation:
-   We want to attain a doping profile of P+ P- N in the N-well where P+ is the source and drain , P- is the LDD and N is already done. similary P-well will have a doping profile of N+ for p source and drain and P is what we already have.
+5. **Lightly Doped Drain (LDD) formation**: We want to attain a doping profile of P+ P- N in the N-well where P+ is the source and drain , P- is the LDD and N is already done. similary P-well will have a doping profile of N+ for p source and drain and P is what we already have.
 
     There are 2 reasons to form LDD:
     - Hot electron effect: Electric field is given by V/d therefore when the device size reduces Electric field increases. Due to this high energy carriers break the Si-Si bond leading to some more elecrons and holes which we do need because we are controlling the doping profile very well. The second reason is that the energy might be so high that it crosses the 3.2eV barrier between the Si conduction band and SiO2 conduction band, if it crosses this band it might just enter into the oxide layer which is present above the substrate and my create liability issue.This is the hot electron effect.
@@ -955,8 +948,7 @@ When we fabricate source and drain they will try to disturb this LDD layer, henc
 
 ![image](https://github.com/user-attachments/assets/d76ee9a0-e2ce-4a70-878c-7222e487cf69)
 
-6. Source and Drain formation:
-  We add a thin layer of screen oxide to avoid the effect of channeling. Channeling is the effect where when we do a lot of ion implantation, if the vector velocity of the ions matches to that of the crystalline structure of the p type substrate, the ions may go deep into the p type substrate without even hitting any silicon atoms. It will help to ranc=domize the direction of implantation and they will try to settle down in the areas that we want them to settle.
+6. **Source and Drain formation**: We add a thin layer of screen oxide to avoid the effect of channeling. Channeling is the effect where when we do a lot of ion implantation, if the vector velocity of the ions matches to that of the crystalline structure of the p type substrate, the ions may go deep into the p type substrate without even hitting any silicon atoms. It will help to ranc=domize the direction of implantation and they will try to settle down in the areas that we want them to settle.
 
 Next we use Mask 9 to expose the p well using the samy photo lithography process. Then we ion implant the arsenic at 75keV which is n type impurity, the arsenic settles in the source and drain but the LDD are still maintained below the side walls. similarly we use the mask 10 to expose n well and we ion implant it with boron at 50keV 
 
@@ -966,8 +958,7 @@ Next we put the hald built Mosfet into the high temperature furnace for  tempera
    
 ![image](https://github.com/user-attachments/assets/cbc4e94e-bab5-4811-b2c1-4626243d79cc)
 
-7. Steps to form contacts and interconnects:
-   First we remove the thin screen oxide that we had deposired by etching it with Hydroflouride solution. Next we deposit a titanium metal having low resistivity , using sputtering method. We hit titanium metal with argon gases then the particles of the metals or the titanium atoms get sputtered or removed from titanium metal and get settled on the substrate.
+7. **Steps to form contacts and interconnects**: First we remove the thin screen oxide that we had deposired by etching it with Hydroflouride solution. Next we deposit a titanium metal having low resistivity , using sputtering method. We hit titanium metal with argon gases then the particles of the metals or the titanium atoms get sputtered or removed from titanium metal and get settled on the substrate.
 
 ![image](https://github.com/user-attachments/assets/ede609d2-565b-4cbe-997d-8675b86a1446)
 
@@ -979,7 +970,11 @@ We again use the photolithography using mask 11 to form the local connections, w
 
 ![image](https://github.com/user-attachments/assets/3e72c75d-e1e4-48cc-acc9-b3c23c668a00)
 
+8. **Higher Level Metal formation**: We notice a non planar suface topography of the wafer which is not ideal to deposit the metal interconnects.So we planarize this surface by depositing 1um of SiO2 doped with phosperous or boron known as phosposilicate glass or borophosposilicate glass one of the reasons to dope it with phosperous is that it acts as a barrier for sodium ions and boron helps to reduce the temperature. We can still observe that the surface is not completely planar. So the next step is to polish and get a plane surface which is called as Chemical Mechanical Polishing (CMP) process.
 
+![image](https://github.com/user-attachments/assets/efb10597-8ae7-4011-9b0b-1632ac802691)
+
+We again do the Photolithiography process using mask 12 to do the contact holes. Then we remove the mask and photoresist and deposite a thin layer of Titanium Nitrate.TiN acts a a very good adhesion layer for SiO2 and iit also acts as a barrier layer between top and bottom interconnects. Next we deposit a blanket tungsten layer 
 
 
 
