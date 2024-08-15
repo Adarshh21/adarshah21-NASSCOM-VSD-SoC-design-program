@@ -888,6 +888,19 @@ Now, open the sky130_inv.mag file in magic:
     magic -T sky130A.tech sky130_inv.mag &
 
 ![image](https://github.com/user-attachments/assets/c9b31f25-280b-4353-9af5-230b1382682f)
+
+Explore the Layout:
+
+![image](https://github.com/user-attachments/assets/d24c7c90-c707-4c68-bc9e-2c7d08119ac7)
+
+we can see that the selected part where poly meets gate is a NMOS.
+
+![image](https://github.com/user-attachments/assets/8cc3e737-93c6-4fbb-9c65-637bdf475535)
+
+It is visible that the output is connected to drains of both PMOS and NMOS.
+![image](https://github.com/user-attachments/assets/5d0d86fc-c1c2-4706-be40-ce372a8512ad)
+
+We can see that the source of PMOS is connected to VDD.
 ____________________________________________________________
 
 # Inception of layout and CMOS fabrication process
@@ -974,8 +987,106 @@ We again use the photolithography using mask 11 to form the local connections, w
 
 ![image](https://github.com/user-attachments/assets/efb10597-8ae7-4011-9b0b-1632ac802691)
 
-We again do the Photolithiography process using mask 12 to do the contact holes. Then we remove the mask and photoresist and deposite a thin layer of Titanium Nitrate.TiN acts a a very good adhesion layer for SiO2 and iit also acts as a barrier layer between top and bottom interconnects. Next we deposit a blanket tungsten layer 
+We again do the Photolithiography process using mask 12 to do the contact holes. Then we remove the mask and photoresist and deposite a thin layer of Titanium Nitrate.TiN acts a a very good adhesion layer for SiO2 and iit also acts as a barrier layer between top and bottom interconnects. Next we deposit a blanket tungsten layer and do CMP to remove the extra tungsten and planarize the surface.
 
 
+The blanket tungsten is the contact layer this need to be connected to the higher metal level. We use a aluminium layer and pattern it using mask 13 using photolithography. We block the almuinium layer part where we want to take out the contact holes to the top. We then add a SiO2 layer by and do CMP process to planarize it. Then we again use Mask 14 to remove the area where we want to deposit metal layer. then we again deposit the thin TiN layer and deposit tungsten and repat the same process to etch mask of aluminium layer and deposit Si3N4 which is a strong dielectric and protects the chip. Finally we use the mask 16 to bring the metal layer to the top.
 
+![image](https://github.com/user-attachments/assets/d429598f-d2ae-4756-b0f1-669a54427812)
+
+
+**Inception of layout and CMOS fabrication process**
+Spice extraction of inverter in magic:
+
+Check current directory
+    
+    pwd
+
+Extraction command to extract to .ext format
+
+    extract all
+Then we check the same file in vsdstdcelldesigns folder in the follwing directory:
+
+    /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
+![image](https://github.com/user-attachments/assets/bebf5ac7-8d7d-41e0-9c4d-6ad92464e32b)
+
+Before converting ext to spice this command enable the parasitic extraction also in magic
+
+    ext2spice cthresh 0 rthresh 0
+
+Converting to ext to spice
+
+    ext2spice
+![image](https://github.com/user-attachments/assets/06c7d4de-9388-4305-9b78-3f3ff9f02935)
+
+This creates a new file *sky130_inv.spice* in vsdstdcelldesigns folder.
+
+![image](https://github.com/user-attachments/assets/011ee192-76f2-40e0-a2cf-0e30288d8e22)
+
+Next we view the *sky130_inv.spice* folder
+
+![image](https://github.com/user-attachments/assets/882905f9-d448-4716-9ba9-c3b697055a75)
+
+# Tech Lab Files
+
+**Creating Final SPICE Deck using Sky130 Tech**
+We wish to vizualize the transient analysis of the CMOS inverter hence we need to add VDD, VSS, Vin to the CMOS Inverter.
+
+We need to ensur that the scaling is proper, right now the scaling is any dimension*10000u we need it to be the value equal to the grid value specified in the layout visible in tkcon window it is 0.01u.
+
+Inside libs folder of vsdstdcelldesigns folder we have the PMOS and NMOS lib files which we add in 'sky130_inv.spice' file
+![image](https://github.com/user-attachments/assets/7f9e0fc5-6128-4a95-9763-2b4893367e6b)
+
+Now let's check what is inside the the model files ie, 'pshort.lib':
+![image](https://github.com/user-attachments/assets/3048e4d6-433d-4bdb-b57d-300fea32cb22)
+
+we see that the model file for PMOS starts with pshort_model.0 hence we need to change the model name in .spice file
+![image](https://github.com/user-attachments/assets/a4ae494d-f0da-47fd-96ad-46c951cc02de)
+
+Make the following changes in the 'sky130_inv.spice' file from Vim:
+
+![image](https://github.com/user-attachments/assets/dcce4037-3cae-4977-b20e-cf0b6ff1d812)
+
+Next we simulate this file in ngspice using the following command 
+
+    /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign ngspice sky130_inv.spice
+
+If you dont have ngspice install it in new terminal window using the command:
+
+    sudo apt-get install ngspice
+ Now that we have entered ngspice with the simulation spice file loaded we just have to load the plot
+      
+      plot y vs time a
+![image](https://github.com/user-attachments/assets/edda71c1-ce2b-4c97-83de-961c9104fe75)
+
+
+![image](https://github.com/user-attachments/assets/0517a713-f192-4704-9845-84e957af7e4f)
+
+The spikes are a bit larger at the edges of inverter output. We can increase the value of load capacitor (C3) in spice netlist to 2fF. The results are shown below.
+![image](https://github.com/user-attachments/assets/c07a1152-e452-41ed-b145-fc765193f2ea)
+
+We can right click and zoom the plot and then leftclick to get the coordinates of any point 
+
+![image](https://github.com/user-attachments/assets/dec66673-3551-47da-8db6-a2898a3eb621)
+
+![image](https://github.com/user-attachments/assets/91e10bb7-1469-48ab-a5c0-26d9e62a4918)
+
+**Characterization of inverter using sky130 tech files**
+To characterize the inverter, we analyze the ngspice plot and determined the following parameters:
+
+- Rise Time: The time for the output waveform to transition from 20% to 80% of its maximum value.
+From plot points: (x0 = 2.18192ns, y0 = 0.66049) to (x0 = 2.24571ns, y0 = 2.64018). Calculated Rise Time = 0.0634 ns
+
+- Fall Time: The time for the output waveform to transition from 80% to 20% of its maximum value.
+From plot points: (x0 = 4.0525ns, y0 = 2.63976) to (x0 = 4.09516ns, y0 = 0.659249). Calculated Fall Time = 0.0422 ns
+
+- Propagation Delay(Cell Rise Delay): The time for the output to transition 50% in response to a 50% change at the input.
+From plot points: Input(x0 = 2.15018ns, y0 = 1.65018) to Output(x0 = 2.21088ns, y0 = 1.65). Calculated Propagation Delay = 0.064 ns
+
+- Cell Fall Delay: The delay for the output to transition 50% due to a 50% change at the input.
+From plot points: (x0 = 4.04997ns, y0 = 1.65) to (x0 = 4.07748ns, y0 = 1.65). Calculated Cell Fall Delay = 0.0277 ns
+
+We have now characterized the inverter cell for a room temperature of 27 degC. Similarly, this cell can be characterized for different process, voltage, and temperature (PVT) corners to fully characterize this cell for different PVT corners.
+
+With these parameters successfully characterized, the next step is to create a LEF file from this cell, which will be plugged into openlane picorv32a design flow.
 
