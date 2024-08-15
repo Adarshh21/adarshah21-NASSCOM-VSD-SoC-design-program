@@ -1193,7 +1193,6 @@ Selecting region displaying the new errors and getting the error messages
     
     drc why
 
-![image](https://github.com/user-attachments/assets/c0177d12-78e9-4bc2-90f3-75116c5a9762)
 ![image](https://github.com/user-attachments/assets/06954fd1-75a3-46e2-b71b-00257a504776)
 
 
