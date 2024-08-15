@@ -996,6 +996,7 @@ The blanket tungsten is the contact layer this need to be connected to the highe
 
 
 **Inception of layout and CMOS fabrication process**
+
 Spice extraction of inverter in magic:
 
 Check current directory
@@ -1030,7 +1031,8 @@ Next we view the *sky130_inv.spice* folder
 # Tech Lab Files
 
 **Creating Final SPICE Deck using Sky130 Tech**
-We wish to vizualize the transient analysis of the CMOS inverter hence we need to add VDD, VSS, Vin to the CMOS Inverter.
+
+ We wish to vizualize the transient analysis of the CMOS inverter hence we need to add VDD, VSS, Vin to the CMOS Inverter.
 
 We need to ensur that the scaling is proper, right now the scaling is any dimension*10000u we need it to be the value equal to the grid value specified in the layout visible in tkcon window it is 0.01u.
 
@@ -1072,10 +1074,11 @@ We can right click and zoom the plot and then leftclick to get the coordinates o
 ![image](https://github.com/user-attachments/assets/91e10bb7-1469-48ab-a5c0-26d9e62a4918)
 
 **Characterization of inverter using sky130 tech files**
+
 To characterize the inverter, we analyze the ngspice plot and determined the following parameters:
 
 - Rise Time: The time for the output waveform to transition from 20% to 80% of its maximum value.
-From plot points: (x0 = 2.18192ns, y0 = 0.66049) to (x0 = 2.24571ns, y0 = 2.64018). Calculated Rise Time = 0.0634 ns
+From plot points: (x0 = 2.283962ns, y0 = 0.664151) to (x0 = 2.24571ns, y0 = 2.64018). Calculated Rise Time = 0.0634 ns
 
 - Fall Time: The time for the output waveform to transition from 80% to 20% of its maximum value.
 From plot points: (x0 = 4.0525ns, y0 = 2.63976) to (x0 = 4.09516ns, y0 = 0.659249). Calculated Fall Time = 0.0422 ns
@@ -1089,4 +1092,119 @@ From plot points: (x0 = 4.04997ns, y0 = 1.65) to (x0 = 4.07748ns, y0 = 1.65). Ca
 We have now characterized the inverter cell for a room temperature of 27 degC. Similarly, this cell can be characterized for different process, voltage, and temperature (PVT) corners to fully characterize this cell for different PVT corners.
 
 With these parameters successfully characterized, the next step is to create a LEF file from this cell, which will be plugged into openlane picorv32a design flow.
+
+**Introduction to Magic tool and DRC rules**
+
+- To know more about the Magic DRC we can go to the website: [The Magic Technology File Manual](http://opencircuitdesign.com/magic/)
+- Link to Google_Skywaters Design Rules: [SkyWater PDK Documentation - Periphery Rules](https://skywater-pdk.readthedocs.io/en/main/rules/periphery.html)
+- For reference , we can use the github repo of Google-Skywater: [SkyWater PDK GitHub Repository](https://github.com/google/skywater-pdk)
+
+**Sky130 Tech File labs**
+Follow the commands below :
+
+Change to home directory
+    
+     cd
+
+Command to download the lab files
+
+    wget http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz
+
+Since lab file is compressed command to extract it
+
+    tar xfz drc_tests.tgz
+
+Change directory into the lab folder
+
+    cd drc_tests
+
+List all files and directories present in the current directory
+
+    ls -al
+
+![image](https://github.com/user-attachments/assets/f3cc6221-612c-4a9e-96f2-e2a524ad1f0f)
+
+Command to view .magicrc file
+
+    gvim .magicrc
+![image](https://github.com/user-attachments/assets/6f77cceb-9d5a-4e92-9648-9872282b44ee)
+
+Command to open magic tool in better graphics
+
+    magic -d XR &
+then go to file and open *met3.mag* in the magic.
+
+![image](https://github.com/user-attachments/assets/335910fb-49c7-4840-8055-a651b1538bc6)
+
+We are shown some examples of m3 errors
+
+![image](https://github.com/user-attachments/assets/902533c8-f1ef-46bb-936e-66cf065c1a40)
+
+In this m3.6 has an area of 150um<sup>2</sup> where as the drc rule is that it should have minimum area of 240um<sup>2</sup>.
+
+![image](https://github.com/user-attachments/assets/5ad13533-d167-47b9-9383-35e1ff08bcc3)
+
+here the spacing between two m3 layers is 0.140um but itnshould be more than 0.3um.
+
+Next we fill an Area with Metal 3 and Creating a VIA2 Mask
+
+Steps:
+1. Select an Area and Fill with Metal 3:
+- Open the Magic GUI.
+- Select the desired area on your layout.
+- Guide the pointer to the metal 3  contact layer.
+- Press P to fill the selected region with metal 3.
+2. Create the VIA2 Mask:
+- Open the *tkcon* terminal within Magic.
+- Type the command: cif see VIA2.
+- The metal 3-filled area will now be associated with the VIA2 mask.
+
+![image](https://github.com/user-attachments/assets/5dc1c480-d66e-496b-93f4-24dcfa6057aa)
+
+**Fixing Poly9 error in sky130 tech file**
+
+Open the poly.mag file in magic
+
+![image](https://github.com/user-attachments/assets/404dc2f7-ef7a-4bd8-996d-fbb0414edc85)
+
+Zoom in on the "Incorrect poly.p" layout and measure the spacing between the poly resistor and poly, using the "box" command. The measurement shows a spacing of 0.210 µm, which is smaller than the "poly.9" DRC rule (0.480 µm). But, we do not get a DRC error. Let's correct this problem.
+
+![image](https://github.com/user-attachments/assets/2e6d5f66-d27f-49d4-8a7c-11c81a703c2f)
+
+![image](https://github.com/user-attachments/assets/32d9c81c-1ccd-4c4f-bda3-d83aea034d91)
+
+Open the Sky130a.tech file located in the drc_tests directory. Search for the "poly.9" keyword and apply the changes shown in the images below. Save the file after making the modifications.
+
+![image](https://github.com/user-attachments/assets/6389b23d-3abd-48f8-88c1-ad0fc80065d1)
+
+![image](https://github.com/user-attachments/assets/ef1c7e2a-dba1-4038-a622-299ec4c58fe3)
+
+Commands in tkcon
+
+Loading updated tech file
+
+    tech load sky130A.tech
+
+Must re-run drc check to see updated drc errors
+
+    drc check
+
+Selecting region displaying the new errors and getting the error messages 
+    
+    drc why
+
+![image](https://github.com/user-attachments/assets/c0177d12-78e9-4bc2-90f3-75116c5a9762)
+![image](https://github.com/user-attachments/assets/06954fd1-75a3-46e2-b71b-00257a504776)
+
+
+
+
+
+
+
+
+
+
+
+
 
