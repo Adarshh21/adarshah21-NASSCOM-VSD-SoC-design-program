@@ -1176,6 +1176,7 @@ Zoom in on the "Incorrect poly.p" layout and measure the spacing between the pol
 Open the Sky130a.tech file located in the drc_tests directory. Search for the "poly.9" keyword and apply the changes shown in the images below. Save the file after making the modifications.
 
 ![image](https://github.com/user-attachments/assets/6389b23d-3abd-48f8-88c1-ad0fc80065d1)
+![image](https://github.com/user-attachments/assets/c0a82278-e5a1-4873-9804-dceb8cb583b6)
 
 ![image](https://github.com/user-attachments/assets/ef1c7e2a-dba1-4038-a622-299ec4c58fe3)
 
