@@ -1043,11 +1043,11 @@ Now let's check what is inside the the model files ie, 'pshort.lib':
 ![image](https://github.com/user-attachments/assets/3048e4d6-433d-4bdb-b57d-300fea32cb22)
 
 we see that the model file for PMOS starts with pshort_model.0 hence we need to change the model name in .spice file
-![image](https://github.com/user-attachments/assets/a4ae494d-f0da-47fd-96ad-46c951cc02de)
+![image](https://github.com/user-attachments/assets/e9653c85-57e8-4ca4-8c8a-d11d61235f6b)
 
 Make the following changes in the 'sky130_inv.spice' file from Vim:
 
-![image](https://github.com/user-attachments/assets/dcce4037-3cae-4977-b20e-cf0b6ff1d812)
+![image](https://github.com/user-attachments/assets/4c3223ec-f72d-4b38-9c50-ba44dc455566)
 
 Next we simulate this file in ngspice using the following command 
 
@@ -1175,7 +1175,6 @@ Zoom in on the "Incorrect poly.p" layout and measure the spacing between the pol
 
 Open the Sky130a.tech file located in the drc_tests directory. Search for the "poly.9" keyword and apply the changes shown in the images below. Save the file after making the modifications.
 
-![image](https://github.com/user-attachments/assets/6389b23d-3abd-48f8-88c1-ad0fc80065d1)
 ![image](https://github.com/user-attachments/assets/c0a82278-e5a1-4873-9804-dceb8cb583b6)
 
 ![image](https://github.com/user-attachments/assets/ef1c7e2a-dba1-4038-a622-299ec4c58fe3)
@@ -1198,6 +1197,7 @@ Selecting region displaying the new errors and getting the error messages
 
 
 
+![image](https://github.com/user-attachments/assets/b2674a23-3149-4228-8796-ef40515abfce)
 
 
 
