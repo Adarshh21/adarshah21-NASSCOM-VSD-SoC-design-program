@@ -1369,16 +1369,20 @@ For the synthesis step, we need the std cell library files. Therefore we copy th
 The .lib file includes the characterization information (cell power, cell rise, cell transition, ...) of every std cell. The files *sky130_fd_sc_hd__typical.lib*, *sky130_fd_sc_hd_fast.lib*, and *sky130_fd_sc_hd__slow.lib* files are defined for different speeds, temperature and voltage values. 
 
 In *sky130_fd_sc_hd__typical.lib* the nmos/pmos transistors are typical (neither fast nor slow) and are characterized at temp. of 25degC and voltage of 1.8V.    
+
 ![image](https://github.com/user-attachments/assets/10d3289f-4255-40d5-a1cc-4796721cffeb)
 
 In *sky130_fd_sc_hd__slow.lib* the nmos/pmos transistors are slow or have maximum delays and are characterized at temp. of 100degC and voltage of 1.6V.
+
 ![image](https://github.com/user-attachments/assets/d213a74a-0437-43a2-95bb-f83be232657d)
 
 In *sky130_fd_sc_hd_fast.lib* the nmos/pmos transistors are fast and characterized at temp. of -40degC and voltage of 1.95V. 
+
 ![image](https://github.com/user-attachments/assets/7b12a39b-cd12-4891-8545-99c34e76da5a)
 
 Now, we need to modify the config.tcl file: Go to the picorv32a directory and open the file using vim and we make the following modifications:
-![image](https://github.com/user-attachments/assets/8fbda318-6c1f-45fe-8897-cced29b90ab6)
+
+![image](https://github.com/user-attachments/assets/085d0307-b355-4422-9fa6-d701ef9dd238)
 
 added lines to point to the lef location which is required during spice extraction.
 
@@ -1395,12 +1399,97 @@ we wish to continue work in new directory hence we use the command
 
     prep -design picorv32a 
 
+![image](https://github.com/user-attachments/assets/0f5d6e22-537c-4abf-8866-1d62c96c0b67)
 
+Include the below command to include the additional lef into the flow:
 
+    set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+    
+    add_lefs -src $lefs
 
+Next run synthesis using command
 
+    run_synthesis
+![image](https://github.com/user-attachments/assets/22d75b65-b196-4905-859a-dcec4dd4f609)
 
+**Introduction to delay tables**
 
+Power aware CTS:
+
+If we make enable pin at logic '1' in the AND gate, then clock will propagate and if we make it 'logic 0' it will block the clock. Similarly in 'OR' gate if we make enable as 'logic 0' it will propagate and on making it 'logic 1' it will block the clock.
+
+So the advantage of this blocking period is that we can save lot of power in clock tree.
+
+![image](https://github.com/user-attachments/assets/916421f5-9b89-4046-becd-2f9e0c8df362)
+
+Instead of splitting the load of all 4 flops on a single buffer we split the load of all 4 flops into two buffers of level 2 and the load of thses 2 buffers was given to the buffer at level 1. We had made a few assumptions as show in figure and found the following observations:
+- There arre 2 levels of buffering
+- At every level each node was driving the same load and the buffers are identical at each levels.
+
+![image](https://github.com/user-attachments/assets/79ae2eea-9f60-4d96-ac58-ba7a1078787f)
+
+The output load capacitance at the output of each buffer for the complete clock tree of the chip is varying. The output on one buffer becomes input to other buffers hance for all the buuffers in the complete clock tree input transitions are also not constant.Tt varies within the range of 10ps to 100 ps.
+Hence there will be a variety of delays, in order to capture all these delays VLSI engineers came with a brillianrt idea of 'Delay Tables'. It is a 2D table, each buffer was taken at a time seperately then we provide it a range of input delays from 10ps to 100 ps against the varying output load of 10fF to 100fF.
+
+There will be a delay table for each level of buffer. Similarly we will be having delay tables for every kind of gate like AND,OR,EXOR,NOR etc. The w/l ratio for buffer 1 will be different from the w/l ratio of buffer 2 ie the buffer size is the internal sizes of pmos n nmos which is called the device size.
+
+When we vary the pmos or nmos size the resistance also varies which in turn varies RC constant which is the dealy of a particular circuits. Hence for each and every size of buffer it will have its individual delay table.
+
+![image](https://github.com/user-attachments/assets/369cdc3f-69cf-4997-97da-dccc439e0a6b)
+
+Let us consider an input of 40ps and we want to find the delay number at load value of 60fF which is not in table, at this time we deduce a equation using the data in the yellow box to calculate delay number for unkown values. In this case let the delay number be x9'.now let's calculate delay for buffer 2. Let us assume the out put transition of buffer 1 after refering to transition table for buffer 1 is 60ps. The out load for buffer 2 is 50fF so the delay number from the delay table for BUF 2 is y15.
+
+![image](https://github.com/user-attachments/assets/81e0fbf9-c8e1-4593-9e25-92e08ab48975)
+
+Hence the delay from BUF1 to flops is x9'+ y15. As the delay for all the flops is same the skew is zero. If the loads at 2 buffers are varying or if the buffers in the same level are of different size then all the flops will have different delays leading to non zero skew. 
+
+**Lab steps to configure synthesis settings to fix slack and include vsdinv**
+
+![image](https://github.com/user-attachments/assets/d3269e88-d37b-478a-906d-f6d9b24be486)
+
+![image](https://github.com/user-attachments/assets/36a3c56d-54b7-4d28-9972-b29aefc0b26d)
+
+From the figure above it is clear that synthesis was successful. A total of 1554 instances of our vsdinverter are used. We can also see the worst slack is -23.89 and the total negative slack is -711.59. The chip area is 147712.918
+
+At this stage, we can try to minimize the slack by performing a timing-driven synthesis. For this, we have to trade off the chip area to improve the delay.
+
+If we open the README.md from the directory 
+    
+    /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/configuration
+    
+we see the variable "SYNTH STRATEGY". If "SYNTH STRATEGY" is 0 or 1 then synthesis is delay-driven and if it is 2, and 3 then it is area driven. we check "SYNTH STRATEGY" with following command:
+
+    # check the current value
+    echo $::env(SYNTH STRATEGY)
+
+which is "0", therefore synthesis is already delay-driven. 
+
+![image](https://github.com/user-attachments/assets/a6d085b9-8f93-4934-a23a-a8ea909e586e)
+
+There are some other variables we can check
+- SYNTH BUFFERING: enables the buffers if the fan output is high and it is set to "1" for delay-driven synthesis.
+- SYNTH SIZING: is upsizing or downsizing the buffers based on delay strategy and we set it "1" for delay-driven synthesis.
+- SYNTH DRIVING CELL: sets the std cell used to drive the input ports. If the input port has a lot of fan-outs then it needs more drive-strength cells to drive the input.
+
+      # Now once again we have to prep design so as to update variables
+      prep -design picorv32a -tag 24-03_10-03 -overwrite
+
+      # Addiitional commands to include newly added lef to openlane flow merged.lef
+      set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+      add_lefs -src $lefs
+      # Command to display the current value of variable SYNTH_STRATEGY
+      echo $::env(SYNTH_STRATEGY)
+      # Command to set a new value for SYNTH_STRATEGY
+      set ::env(SYNTH_STRATEGY) "DELAY 3"
+      # Command to display the current value of variable SYNTH_BUFFERING to check whether it's enabled
+      echo $::env(SYNTH_BUFFERING)
+      # Command to display the current value of variable SYNTH_SIZING
+      echo $::env(SYNTH_SIZING)
+      # Command to set a new value for SYNTH_SIZING
+      set ::env(SYNTH_SIZING) 1
+      # Command to display the current value of variable SYNTH_DRIVING_CELL to check whether it's the proper cell or not
+      echo $::env(SYNTH_DRIVING_CELL)
+      # Now that the design is prepped and ready, we can run synthesis using the following command
 
 
 
