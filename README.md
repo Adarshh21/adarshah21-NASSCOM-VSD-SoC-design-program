@@ -1195,10 +1195,205 @@ Selecting region displaying the new errors and getting the error messages
 
 ![image](https://github.com/user-attachments/assets/06954fd1-75a3-46e2-b71b-00257a504776)
 
-
-
 ![image](https://github.com/user-attachments/assets/b2674a23-3149-4228-8796-ef40515abfce)
 
+**Incorrect implementation of nwell 4 rule**
+
+![image](https://github.com/user-attachments/assets/acfef3d9-2ff9-4233-ac01-ccd80ba505e8)
+
+![image](https://github.com/user-attachments/assets/5000c968-0677-42b4-a7d9-6b95ce34b268)
+
+![image](https://github.com/user-attachments/assets/a89db346-d942-4797-8189-809b512a994e)
+
+update the following in *sky130A.tech*:
+
+![image](https://github.com/user-attachments/assets/3793096d-79e3-4b4b-be7a-a8019f21c5c9)
+
+![image](https://github.com/user-attachments/assets/54318d9b-985f-4b95-899b-bbc38ded6a5f)
+
+**Commands in tkcon**
+
+Loading updated tech file
+
+    tech load sky130A.tech
+
+Change drc style to drc full
+    
+    drc style drc(full)
+
+Must re-run drc check to see updated drc errors
+
+    drc check
+
+Selecting region displaying the new errors and getting the error messages 
+    
+    drc why
+![image](https://github.com/user-attachments/assets/05d864df-5e5f-4b26-80c8-c04cd3648fda)
+
+![image](https://github.com/user-attachments/assets/484c4b8d-94fc-4804-ae1e-a6505d811d91)
+
+![image](https://github.com/user-attachments/assets/6d855064-7571-4ef7-8e7e-100258a8ce9e)
+___________________________________
+# Day 4: Prelayout timing analysis and importance of good clock tree
+
+# Timing modelling using delay tables
+
+Certain conditions for making a standard cell are: 
+1. The input and output ports should lie on the intersection of the vertical and horizontal tracks,
+2. The width of the std cells should be odd multiple of the track horizontal pitch and height should be odd multiple of track vertical pitch.
+To check the track go to the following directory:
+
+        /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/openlane/sky130_fd_sc_hd
+
+Tracks: Tracks are used in routing stages, where routes are metal traces (met1, met2, ...). Track information tells where the routes (metal layers) will go during the routing stage. During PnR we need to specify where the routes will go and this info is given by tracks. tracks.info can be found from the following path.
+
+Now open the tracks.info file
+
+    less tracks.info
+Open the file name tracks.info. This file specifies pitch, spacing, and other relevant details necessary for efficient routing. Each metal layer has an X and Y direction.
+
+![image](https://github.com/user-attachments/assets/8f828b50-846a-4774-a9a9-894488614f23)
+
+Now to open the custom Inverter Layout in Magic, first go to the 'vsdstdcelldesign' directory and then run command:
+
+    magic -T sky130A.tech sky130_inv.mag &
+Ports are in the li1 (loci) metal layer and we check if these ports are on the intersection of the li1 () horizontal and vertical track. To check this, in magic press G to turn on the grids
+
+To set grids as tracks of locali layer, use the following command:
+
+      grid 0.46um 0.34um 0.23um 0.17um
+
+![image](https://github.com/user-attachments/assets/545ebc6b-4124-4fbc-884b-029897e33814)
+
+li1 layer is fully on the grid layer. We can see that input and output ports lie on the intersections of vertical and horizontal tracks. This satisfies the condition 1.
+
+![image](https://github.com/user-attachments/assets/692e6944-d58b-40d7-8c94-ba55992ee60a)
+
+We can also see that the width of the std cell is equal to the 3 grid/track boxes. As mentioned the standard cell's width should be an odd multiple of the horizontal track pitch, and its height should be an odd multiple of the vertical track pitch. This satisfies the condition 2.
+
+![image](https://github.com/user-attachments/assets/57279253-2606-43b0-b4fc-67584672d913)
+ 
+![image](https://github.com/user-attachments/assets/5f7ec353-14a9-472f-b25c-99b80b5cf798)
+
+**Converting magic layout to standard cell LEF**
+
+Create port definition:
+
+Now to convert the label to a port for LFE abstraction select the port region and open file-->text. Then fill in the entries as shown below [No need to do it here as it is already done]:
+
+![image](https://github.com/user-attachments/assets/beb2b20b-fa10-4908-9422-294d6c4215e3)
+
+A similar process is revised for Y, VPWR, and VGND ports. Note that A and Y ports are connected to the locali metal layer, whereas VPWR and VGND ports are connected to the metal2 layer.
+
+Port class and port use attributes for a layout: 
+
+After port definition, the next step is setting port class and port use attributes. These attributes are used to define the purpose of the port. Class and use properties are used by the LEF format for read-and-write routines. Press the button "s" to select the right port layer, then use the following commands:
+
+to confirm the port
+    
+    what
+to define the port class and use
+
+    port class input
+    port use signal
+
+![image](https://github.com/user-attachments/assets/cab41bc5-6edd-4386-a94e-efcd8c85398d)
+
+for Y port
+
+    port class output
+    port use signal
+
+![image](https://github.com/user-attachments/assets/d107841d-9023-445f-a64c-c2c4640552ed)
+
+for A port
+
+    port class input
+    port use signal
+
+![image](https://github.com/user-attachments/assets/c72caee6-9acd-41c9-9e57-77e72e621a0b)
+
+for VPWR port
+
+    port class inout
+    port use power
+
+![image](https://github.com/user-attachments/assets/b4d20d82-46a2-4081-8173-4245ec4c7649)
+
+for VGND port
+
+    port class inout
+    port use ground
+
+Now we need to extract the LEF file. Before that, lets save .mag file by using the command *save sky130_vsdinv.mag* in the tkcon terminal.
+
+Now, use the following command to open the saved mag file from the *vsdstdcelldesign* foldwe :
+
+    magic -T sky130A.tch sky130_vsdinv.mag &
+To extract the LEF file, use the following command in tckon window:
+
+    lef write
+![image](https://github.com/user-attachments/assets/bffae9ae-4055-4580-816d-93a4c4b13e53)
+
+![image](https://github.com/user-attachments/assets/0f8f378d-12a3-4fe0-9990-f3639e17d490)
+
+![image](https://github.com/user-attachments/assets/6a07cef4-aa14-40d9-9859-5826edc09760)
+
+Now let's open the lef file
+
+![image](https://github.com/user-attachments/assets/0fdcbac6-032b-47a5-b5f3-377261fe27d0)
+
+Next, we plug in the LEF file in the picorv32a design.
+
+**Introduction to timing libs and steps to include new cell in the synthesis**
+
+Now we redo the Synthesis, Placement, and Route steps. For this, we add our custom cell in the picorv32a openlane design flow. We make sure that our pwd is 
+
+    /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign. 
+
+From here, we copy the .lef file using the following commands:
+    
+    cp sky130_vsdinv.lef /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src
+
+so that it gets copied to src folder of picorv32a.
+
+
+For the synthesis step, we need the std cell library files. Therefore we copy the .lib files from the directory vsdstdcelldesign/libs using the following commands:
+
+    cp sky130_fd_sc_hd__* /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src
+
+![image](https://github.com/user-attachments/assets/4bbb7739-f316-4b38-8bbf-98db43b2db3b)
+
+![image](https://github.com/user-attachments/assets/42c97c4b-cb1d-4309-84c7-52118e3d1b03)
+
+The .lib file includes the characterization information (cell power, cell rise, cell transition, ...) of every std cell. The files *sky130_fd_sc_hd__typical.lib*, *sky130_fd_sc_hd_fast.lib*, and *sky130_fd_sc_hd__slow.lib* files are defined for different speeds, temperature and voltage values. 
+
+In *sky130_fd_sc_hd__typical.lib* the nmos/pmos transistors are typical (neither fast nor slow) and are characterized at temp. of 25degC and voltage of 1.8V.    
+![image](https://github.com/user-attachments/assets/10d3289f-4255-40d5-a1cc-4796721cffeb)
+
+In *sky130_fd_sc_hd__slow.lib* the nmos/pmos transistors are slow or have maximum delays and are characterized at temp. of 100degC and voltage of 1.6V.
+![image](https://github.com/user-attachments/assets/d213a74a-0437-43a2-95bb-f83be232657d)
+
+In *sky130_fd_sc_hd_fast.lib* the nmos/pmos transistors are fast and characterized at temp. of -40degC and voltage of 1.95V. 
+![image](https://github.com/user-attachments/assets/7b12a39b-cd12-4891-8545-99c34e76da5a)
+
+Now, we need to modify the config.tcl file: Go to the picorv32a directory and open the file using vim and we make the following modifications:
+![image](https://github.com/user-attachments/assets/8fbda318-6c1f-45fe-8897-cced29b90ab6)
+
+added lines to point to the lef location which is required during spice extraction.
+
+Now, invoke the docker and perform the regular steps as shown:
+
+    /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane
+    docker
+    flow.tcl -interactive
+    package require openlane 0.9
+to continue the work in the already made directory in the runs folder
+    
+    prep -design picorv32a -tag 10-08_10-17 -overwrite
+we wish to continue work in new directory hence we use the command 
+
+    prep -design picorv32a 
 
 
 
@@ -1208,3 +1403,7 @@ Selecting region displaying the new errors and getting the error messages
 
 
 
+
+
+
+    
