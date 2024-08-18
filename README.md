@@ -1490,9 +1490,151 @@ There are some other variables we can check
       # Command to display the current value of variable SYNTH_DRIVING_CELL to check whether it's the proper cell or not
       echo $::env(SYNTH_DRIVING_CELL)
       # Now that the design is prepped and ready, we can run synthesis using the following command
+![image](https://github.com/user-attachments/assets/880333a5-32af-47b6-abee-ac9de82b4ba7)
+
+Now run synthesis usning *run_synthesis* again and see if the delay is improved. From the new synthesis report, we noticed that slack was not changed so it was already optimized.
+![image](https://github.com/user-attachments/assets/7f3264fa-081a-4136-9d7e-c376ea7e78fe)
+
+A total of 1434 instances of our vsdinverter are used.
+
+![image](https://github.com/user-attachments/assets/2b206317-6a47-4a55-8c84-7efa194d533c)
+
+As we have completed the synthesis stage now we complete the floorplan using the following command:
+
+    init_floorplan
+    place_io
+    tap_decap_or
+
+![image](https://github.com/user-attachments/assets/708da331-a997-4e1c-82e3-ffec5f2ab291)
+
+Now, as the floorplan stage is completed, we run placement
+
+    run_placement
+
+![image](https://github.com/user-attachments/assets/da268dca-fa60-4c77-bc07-95ee19f32b39)
+
+![image](https://github.com/user-attachments/assets/9535fc84-18ba-4499-9059-880d57caae50)
+
+We can also see the worst slack and the total negative slack is 0. Similarly, the slack = data required time - data arrival time = 4.54ns as the slack is positive, so there is no slack violation.
+
+Now, to check whether the std cell we have created has been included in the design or not. Go to the following directory:
+
+     /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/26-07_10-33/results/placement
+
+and use
+
+    magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
+
+![image](https://github.com/user-attachments/assets/7c13b7e3-4715-45ad-8afa-79bf7ab92e28)
+
+![image](https://github.com/user-attachments/assets/a1f77ec1-a882-416d-84e2-aad09555f86b)
+
+![image](https://github.com/user-attachments/assets/8b9d382e-4a12-4adc-a403-e8e1136b4527)
+________________________________________________________________________________
+
+# Timing analysis using ideal clock using openSTA
+
+**Setup timing Analysis and Introduction to Flipflop setup time**
+
+Let's start the setup analysis with the ideal clock(single clock). specifications of the clock is
+
+clock frequency =1 GHz
+
+clock period =1 ns
+
+![image](https://github.com/user-attachments/assets/901477d0-cf32-4b6f-8d01-8299b03384a4)
+
+We have a combinational logic sitting between launch flop and capture flop, which are connected by ideal clock network which means the clock tree is not yet built.
+
+Now will do the analysis between '0' and 'T' clock period. We sent at edge to the launch flop at '0' clock period and at T=1ns period the second edge reached to capture flop.
+
+Let's say here we have combinatonal delay of theta and set up timing analysis says that this combinational delay should be less than the T for system to work properly. Now let's open the capture flop and we will see some combinational circuit there it has several MOSFETs , several logics,resistances and capacitances inside it
+
+![image](https://github.com/user-attachments/assets/facb62a4-9ac1-4c9f-839f-77d79c932a7d)
+
+Let's consider a flop which has 2 MUX. When the clock is logic 0 the MUX 1 outputs after some delay while the MUX 2 feedbacks itself and when the clock is logic 1 the MUX 2 outputs after some delay while the MUX 1 feedbacks itself. Also we have the time graph for this particular flop When there is logic '0' or logic '1' of clock 1 the delay of MUX1 and MUX2 will restrict or effect the combinational delay requirement.
+
+So there is some finite amount of time which is required to the D input to settle and this amount of time is reffered to as SET UP TIME.
+
+Hence finite time 's' required before clk edge for 'D' to reach Qm.
+
+So, we can write that the internal delay of the MUX1 = set up time(S).
+
+So, now θ<T becomes θ<(T-S).
+
+**Introduction to clock jitter and uncertainity**
+
+![image](https://github.com/user-attachments/assets/44ec8f00-58ab-45eb-be62-c55ef8293883)
+
+So in Jitter the clock is being created by PLL(phase-locked loops) and the clk source is expected to sent the clk signal at exactly 0,T,2T,....But that clk source might or might ot be able to generate the clk exactly at 0 or any other certain time because of it's inbuilt variations that is called jitter. Jitter is refered as temporary variation of the clk pulse. Let's consider this uncertantity time(US) in consideration. So, now equation will become θ<(T-S-US). Now assuming 'S'=0.01ns and 'US'=0.09ns hence theta < 0.9ns. By taking this, let's identify the timing path in our circuit stage 1 and stage 2 logic path has single clock.
+
+Now,we have to identify the combinational path delay for the both logics.
+
+ ![image](https://github.com/user-attachments/assets/1bb23713-2e47-499d-b73a-15f2cc92b6d0)
+
+![image](https://github.com/user-attachments/assets/24b8a5b7-9a62-4d8c-9e41-8d594ecb45f7)
+
+With stage 1 circuit the combinational delay will be the sum of delay of FF1, estimated wire delay between FF1 and gate1, delay of gate 1, estimated wire delay between gate1 and gate2, delay of gate 2, estimated wire delay between gate2 and FF2. Similarly for stage 2 circuit the combinational delay will be the sum of delay of FF1, delay of gate 1, delay of gate 2. These two combinational delays should be less than theta<0.9ns.
+
+**Post-Synthesis timing analysis with OpenSTA tool**
+
+Newly created pre_sta.conf for STA analysis in openlane directory using the following command:
+
+    touch pre_sta.conf
+
+![image](https://github.com/user-attachments/assets/3f4d9dfc-fd3d-4ba4-9cdb-eed1bfd933e1)
+
+Modify the *pre_sta.conf* as shown using following command:
+
+    vim pre_sta.conf
+
+![image](https://github.com/user-attachments/assets/141d8d30-99c6-4d20-bc2c-746f8a04064a)
+
+Newly create *my_base.sdc* for STA analysis in *openlane/designs/picorv32a/src* directory based on the file *openlane/scripts/base.sdc*
+
+![image](https://github.com/user-attachments/assets/f315d398-aad4-4a21-86b8-5d7353a24f21)
+
+Modify the changes in *my_base.sdc* as shown:
+
+![image](https://github.com/user-attachments/assets/bec9e3d5-7afc-4269-90b5-ed91cd5dc8ed)
+
+Change directory to openlane
+
+    cd Desktop/work/tools/openlane_working_dir/openlane
+
+Command to invoke OpenSTA tool with script
+
+    sta pre_sta.conf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
