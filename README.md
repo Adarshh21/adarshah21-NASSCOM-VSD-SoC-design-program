@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/04613433-091f-48bd-a46c-669bac5e957c)![image](https://github.com/user-attachments/assets/fce8bb49-eabd-4391-b0f6-a889730cafae)  ![image](https://github.com/user-attachments/assets/ef4011d6-7726-431c-8410-d938c16324ff)# adarshah21-NASSCOM-VSD-SoC-design-program
+# adarshah21-NASSCOM-VSD-SoC-design-program
 
 # Day1
 ______________________________________
@@ -2040,8 +2040,7 @@ hold time is improved from 0.0772 to 0.2456
 
 ![image](https://github.com/user-attachments/assets/ea6b3768-2e5c-4e8b-99cc-e62c66749188)
 
-setup time remained the same as 14.1462
-
+setup time reduced from 4.9738 to 4.9408 
 ![image](https://github.com/user-attachments/assets/bf98110b-d117-4ab3-9c6f-877cbf98327b)
 
     # Report hold skew
@@ -2065,3 +2064,207 @@ To insert sky130_fd_sc_hd__clkbuf_1 from the list
 
 ![image](https://github.com/user-attachments/assets/4ce4d5ef-92bc-46bc-9739-0995d4f9db0b)
 _______________________________________________________________
+# Day 5: Final steps for RTL2GDS using Tritronroute and openSTA
+
+# Routing and design rule check
+
+**Introduction to maze routing(Lees algorithm)**
+
+**Routing**:
+
+It is finding the best shortest possible connection between two end points with one point being the source and other point being the target and with less number of twist and turns.
+
+**Maze-Routing(Lee's Algorithm)**: 
+
+These should not be zig-zag lines of connections most of the connections should be in L shape or in Z shape. So according to algorithm first it create some grids and grids are routing at the backend. It's called as routing grid. There are some numbers of grids on this routig having some dimensions. So here we are having two points one is 'Source' and the other is 'Target'. With the help of this routing grid algorithm has to find out the best possible way between them.
+
+First step is algorithm does is it tries to lable all of the grids surrounded. All the adjacent grid surrounding to source are labelled 1. Only the adjacent horizontal and vertical grids are labeled not the digonal one as shown in the image below. Now we will lable the grids to the next integer untill we reach to the target. In the example we reached the target after integer 9.Now the algorithm traces some path from source to desitination, so now there are so many ways to reach to target from source but we have to choose the best shortest possible way to reach the target. And we need to avoid the zig-zag way better to choose 'L' shape routing'as it has less bends than zig zag routing which have atleast two bends.
+
+![image](https://github.com/user-attachments/assets/da429ff8-b2b9-476e-baea-595c0c51c541)
+
+**Design Rule check**
+
+So in order to go to DRC we need to follow some steps which are called drc cleaning.
+
+Let's take the example of the above circuit. Let's say we have two parallel wires so the rule says that whenever we choose two wires there should be minimum distance between these two wires.
+
+![image](https://github.com/user-attachments/assets/1bed7b86-763a-4aa2-8afa-33e32e3ecde9)
+
+**Rules**
+1. Wire width:- Width of the wire should be minimum that derived from the optical wavelenth of lithography technique applied. the width can be greater than the minimum limit but not small.
+   
+![image](https://github.com/user-attachments/assets/a5c34e2b-e18b-4067-b052-eb51f9d9ff98)
+
+2. -Wire Pitch:- The minimum pitch between two wire should be atleast a particular length. This lenght is determined by optimization techniques by trying with different lenghts.
+
+![image](https://github.com/user-attachments/assets/40631849-7929-4042-b008-ad9e51e5a79e)
+
+3. Wire Spacing:- The wire spacing between two wires should be a minimum of particular lenght because if its less than that it cannot be printed using lithography tools.
+
+![image](https://github.com/user-attachments/assets/ee7d20c6-fe1b-4893-a02a-195c4fe57e6f)
+
+4. Signal Short:- 
+
+![image](https://github.com/user-attachments/assets/248d944b-bef8-40b4-847d-84a58ef64f52)
+
+When the two metal wires of same metal types are passing over each other they form a signal short. Lets say the metal was of type M<sub>n</sub> then we take other metal layer say M<sub>n+1</sub> and route it over the shorting area then we again connect it to the metal layer M<sub>n</sub> through vias. Usually upper metal is wider than the lower metal. but we now need to check Via width and Via spacing. 
+
+![image](https://github.com/user-attachments/assets/e8853d4e-e7e2-4ebd-9dea-b0a217edd63a)
+
+5. Via Width :- The minimum width of a via should be a particular length.
+
+![image](https://github.com/user-attachments/assets/6a7bfb70-1988-440c-a434-df9d869d1bdb)
+
+6. Via Spacing :- The minimuum spacing between two vias should be a particular length.
+
+![image](https://github.com/user-attachments/assets/7bd04d7a-359e-49d9-ad9c-b48c8a5a44d2)
+
+After routing and DRC the next step is Parasitic extraction. Resistance and capacitance present on every wire should be extracted and use for further process.
+__________________________________
+
+#  Power distribution network and routing
+
+**Lab steps to build Power distribution Network**
+
+Once CTS is ready we can generate a power distribution network (PDN) before routing. Let's check our current DEF file, using the following commands:
+
+    echo $::env(CURRENT_DEF)
+
+which should be a CTS DEF file (picorv32a.cts.def)
+
+Use the following commands for PDN
+
+    gen_pdn
+
+![image](https://github.com/user-attachments/assets/d6ae1f92-6d48-4d09-816b-a9804be3aa58)
+
+![image](https://github.com/user-attachments/assets/20ffa818-fd44-4c5d-8ad5-f3a1af3eaa2d)
+
+![image](https://github.com/user-attachments/assets/78eb9165-7fbf-4be6-8180-f700bf563f33)
+
+The PDN output above shows that PDN writes the LEF file, reads the CTS DEF and creates the grid and straps for the power and ground. As we know STDcells are placed in the std rows, therefore STDcell power rails are placed along the stdcell rows. The stdcell rails have a pitch of 2.720, equivalent to the height of the stdcell inverter. Thus the power and ground stdcell rails match with the GND and PWR ports of stdcell inverter.
+
+Next use these commands to view the PDN on layout:
+   
+    # Change directory to path containing generated PDN def
+    cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/18-08_06-11/tmp/floorplan/
+
+    # Command to load the PDN def in magic tool
+    magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read 14-pdn.def &
+
+
+![image](https://github.com/user-attachments/assets/cf5b7570-a338-4d91-b362-afc7d9fbf3e9)
+
+![image](https://github.com/user-attachments/assets/a927a4f4-b03b-4aca-8b1a-f688c9cad4f3)
+
+![image](https://github.com/user-attachments/assets/fcd3d1a2-39f6-4bd2-bdd6-a84a9705712a)
+
+We can see that all the standard cells are of size of that between the two power routes.
+
+**Lab steps from power distribution to routing**
+
+
+![image](https://github.com/user-attachments/assets/5c157811-edff-43d1-bb19-dc9b40a2b67f)
+
+In the figure above, the green area corresponds to the picorv32a design. The red pads are for power, while the blue pads provide the ground connection. square pads are the corner pads.
+
+From the pads, power is supplied to the rectangular close-loop rings. The vertical lines connected to the rings are power straps. The std cells power and ground rails are attached to vertical straps. The height of the std cells must be multiple of the rail pitch to ensure proper power and ground connection. This image shows how the power comes from the outside to the pads, pads to the rings, rings to strap/stripe, and strap/stripe to stdcell rows.
+
+
+
+
+
+![image](https://github.com/user-attachments/assets/92b08536-2e0f-4b0d-92f0-59c72a5bef5c)
+
+The entire routing process is very complex and the solution phase is huge. So the entire routing process is divided into 2 parts
+- Fast Route (Global Route): 
+
+   The routing region is divided into rectangular grade cells and 3d routing graph is used in global routing.
+- Detail Route:
+
+  Fast Route is followed by detailed route, it should ensure that the segments and vias are in according to the Global route.
+
+The output of fast route is a route guides as shown in figure, then the detailed route we use some routing algorithm to find the best possible connectivity.
+
+**TritonRoute**
+
+TritonRoute is a sophisticated detailed routing tool designed for the physical design of integrated circuits (ICs). It integrates several advanced features that enable efficient and accurate routing in complex designs, especially for advanced technology nodes.
+
+Features of TritonRoute
+
+- Performs initial Detail Route.
+- It honors preprossessed route guides obtained after fast route. that is it attempts as much as possible to route within route guides.
+- Assumes route guides for each net satisfies inter guide connectivity, that is it ensures that the connections between different routing guides are optimized for both performance and manufacturability.
+- Works on proposed MIPL based panel routing scheme with intra layer parallel  routing and inter layer sequential routing framework.
+
+Preprossessed Route Guides:
+
+![image](https://github.com/user-attachments/assets/c1be5285-7760-4dbe-b5cd-ccf4b47305da)
+
+- The preferred direction for metal 1 is vertical and metal 2 is horizontal.
+- the initial routing uides have routing done in horizontal direction too which is not preferred.
+- this horizontal route is divided or splitted into routes of unit length.
+- then the unit routes connected to vertical routes are merged e=with them.
+- then the bridging between the vertical routes is made with metal 2 for which we prefer horizontal direction.
+
+Inter Guide Connectivity:
+
+Two guides are connected if:
+- They are on the same metal layer with touching edges.
+- They are on neighbouring metal layers with a non zero vertically overlapped area.
+
+Each unconnected terminal that is pin of a standard cell instance should have its pin shape overlapped by a route guide.
+
+Intra Layer parallel and inter layer sequential panel routing:
+
+![image](https://github.com/user-attachments/assets/b49adaf3-5194-40b2-8e23-c733b134980c)
+- TritonRoute employs an intra-layer parallel routing method, allowing it to handle multiple routing tasks simultaneously within the same layer. This parallelism increases the efficiency and speed of the routing process.
+- For inter-layer routing, TritonRoute uses a sequential panel routing method. This approach ensures that connections between different layers are made in a controlled and orderly manner, reducing the risk of conflicts and ensuring that all design rules are adhered to.
+
+**Detailed routing using TritonRoute and explore the routed layout**
+     
+      # Check value of 'CURRENT_DEF'
+      echo $::env(CURRENT_DEF)
+
+      # Check value of 'ROUTING_STRATEGY'
+      echo $::env(ROUTING_STRATEGY)
+
+      # Command for detailed route using TritonRoute
+      run_routing
+
+![image](https://github.com/user-attachments/assets/9759d932-03fd-4a52-aa4d-277cc7f472de)
+
+
+![image](https://github.com/user-attachments/assets/1c34d474-ec29-4800-b232-a0e285e79e2e)
+
+The routing has been completed with zero violations and no slack. Hence, routing is successful.
+
+To view the routing results inclduing the Parsitic Extraction file .spef go to the routing directory of picorv32a results:    
+   
+    /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/18-08_06-11/routing
+
+Also netlist files updated some stages can be seen below:
+
+![image](https://github.com/user-attachments/assets/b24a2a44-8abf-4b60-b761-edd40ea7841c)
+
+First file is netlist after first synthesis, third file is the netlist updated after CTS and fourth netlist is generated before routing. The final netlist used for routing was .preroute.v
+
+To view the final layout, use the following command:
+
+    # Change directory to path containing routed def
+    cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/18-08_06-11/results/routing/
+
+    # Command to load the routed def in magic tool
+    magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.def &
+
+![image](https://github.com/user-attachments/assets/b9b6a82c-e0ef-4df6-8cd8-2ea920eb3ad6)
+
+![image](https://github.com/user-attachments/assets/9cefc4ee-bcbe-4b9f-b96e-24b70135ba46)
+
+![image](https://github.com/user-attachments/assets/b565ee4c-3f3e-4cdf-b993-f4454c0fc4a9)
+
+The custom inverter was successfully included in the picorv32a design. Below is the final zoomed routed layout of the picorv32a design with the custom cell highlighted.
+
+![image](https://github.com/user-attachments/assets/3268e500-a86f-4541-b32f-9dfd53ca01c9)
+
+The RTL to GDS flow is iterative process, where synthesis is repeated several times to optimize the design.
